@@ -4,8 +4,10 @@ var Universe = require('./universe.js');
 var config   = require('./config.js');
 var fs       = require('fs');
 var Helper   = require('./helpers.js');
+var Mapper   = require('./mapper.js');
 
 var helpers = new Helper;
+var maptool = new Mapper;
 
 function bigBang() {
     var universe = new Universe();
@@ -24,6 +26,7 @@ function bigBang() {
         clusterCount++;
         var cluster = new Cluster(clusterCount, "Cluster " + clusterCount);
         var clusterSize = Math.floor(Math.random() * config.MAX_SECTORS_PER_CLUSTER) + parseInt(config.MIN_SECTORS_PER_CLUSTER, 10);
+
         for (var i = 0; i < clusterSize; i++) {
             sectorList = helpers.shuffle(sectorList);
             sector = sectorList.pop();
@@ -34,6 +37,7 @@ function bigBang() {
             cluster.addSector(sector);
         }
 
+        console.log("Cluster size: " + cluster.sectors.length);
         // Set neighbors for clusters
         for (var j = 0; j < cluster.sectors.length; j++) {
             var sector = universe.getSector(cluster.sectors[j]);
@@ -41,6 +45,7 @@ function bigBang() {
             var neighborList = cluster.sectors.slice(0);
             var inbound = false;
             var outbound = false;
+
             while (sector.neighbors.length < neighborCount) {
                 neighborList = helpers.shuffle(neighborList);
 
@@ -52,10 +57,12 @@ function bigBang() {
                 while (neighbor == sector) {
                     neighbor = neighborList.pop();
                 }
-                if (Math.floor(Math.random() * 100) > 50) {
+
+                var inboundChance = Math.floor(Math.random() * 100) + 1;
+                if (!inbound || inboundChance < 50) {
                     sector.addNeighbor(neighbor);
                     inbound = true;
-                } else {
+                } else if (!outbound || inboundChance >= 50) {
                     neighbor = universe.getSector(neighbor);
                     neighbor.addNeighbor(sector.id);
                     outbound = true;
@@ -68,16 +75,28 @@ function bigBang() {
     // hook up clusters
     for (var i = 0; i < universe.clusters.length; i++) {
         var cluster = universe.clusters[i];
+
+        cluster1 = universe.getCluster(i);
+
+        // Next cluster
+        if (universe.clusters[i + 1]) {
+            var clusterN = universe.getCluster(i + 1);
+        } else {
+            // Wrap around to first cluster
+            var clusterN = universe.getCluster(0);
+        }
+        cluster1.connect(clusterN, universe);
+
+        // Outbound cluster
         var outboundCluster = Math.floor(Math.random() * universe.clusters.length);
         while (outboundCluster === i) {
             outboundCluster = Math.floor(Math.random() * universe.clusters.length);
         }
 
-        // Outbound
-        cluster1 = universe.getCluster(i);
         cluster2 = universe.getCluster(outboundCluster);
         cluster1.connect(cluster2, universe);
 
+        // Inbound cluster
         var inboundCluster = Math.floor(Math.random() * universe.clusters.length);
         while (inboundCluster === i) {
             inboundCluster = Math.floor(Math.random() * universe.clusters.length);
@@ -114,7 +133,15 @@ for (var c = 0; c < universe.clusters.length; c++) {
 }
 
 fs.writeFile("map.json", JSON.stringify({"nodes": nodes, "links": links}));
-helpers.getInput(sector, universe);
+
+
+// console.log(maptool.testPaths(universe));
+
+
+
+
+
+// helpers.getInput(sector, universe);
 // console.log(JSON.stringify({ "nodes": nodes, "links": links }));
 
 

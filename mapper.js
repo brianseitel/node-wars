@@ -37,6 +37,7 @@ var Mapper = function() {
         var quickest = 1000000;
         var longest  = 0;
 
+        console.log("Testing paths...");
         for (var i = 1; i < universe.sectors.length; i++) {
             for (var j = 1; j < universe.sectors.length; j++) {
                 if (j === i) {
@@ -49,7 +50,7 @@ var Mapper = function() {
 
 
                 var shortest = g.shortestPath(i.toString(), j.toString());
-                console.log("["+i+" => "+j+"]: " + shortest);
+                // console.log("["+i+" => "+j+"]: " + shortest);
 
                 if (!shortest) {
                     fails++;
@@ -65,6 +66,8 @@ var Mapper = function() {
         console.log("Unreachable:           " + fails);
         console.log("Shortest route length: " + quickest);
         console.log("Longest route length:  " + longest);
+
+        return fails === 0;
     }
 }
 

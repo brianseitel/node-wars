@@ -22,6 +22,11 @@ var Universe = function() {
         return this.sectors[id];
     }
 
+    this.hasSector = function(sector) {
+        var sector = this.getSector(sector);
+        return !!sector;
+    }
+
     this.getSector = function(sector) {
         id = null;
         if (typeof sector == "object") {

@@ -1,10 +1,10 @@
 var config = {
-    NUM_SECTORS: 50,
+    NUM_SECTORS: 32,
     MIN_NEIGHBORS: 1,
-    MAX_NEIGHBORS: 4,
-    MIN_CLUSTERS:  10,
-    MIN_SECTORS_PER_CLUSTER: 4,
-    MAX_SECTORS_PER_CLUSTER: 10,
+    MAX_NEIGHBORS: 3,
+    MIN_CLUSTERS:  5,
+    MIN_SECTORS_PER_CLUSTER: 2,
+    MAX_SECTORS_PER_CLUSTER: 4
 };
 
 module.exports = config;

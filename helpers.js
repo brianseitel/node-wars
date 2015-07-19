@@ -1,5 +1,6 @@
 var prompt   = require('prompt');
 var Universe = require('./universe.js');
+var Mapper   = require('./mapper.js');
 
 var Helper = function() {
 
@@ -28,9 +29,16 @@ var Helper = function() {
             if (parseInt(result.input)) {
                 var input = parseInt(result.input);
 
-                if (sector.hasNeighbor(input)) {
+                if (input === sector.id) {
+                    console.log("You are already there, dummy!");
+                } else if (sector.hasNeighbor(input)) {
                     console.log("You warp to Sector " + input + " at light speed!");
                     sector = universe.getSector(input);
+                } else if (universe.hasSector(input)) {
+                    var mapper = new Mapper;
+                    var G = mapper.buildGraph(universe);
+                    var path = mapper.shortestPath(sector.id, input, G);
+                    console.log("Shortest path is " + path.length + " hops: " + path.join(" -> "));
                 } else {
                     console.log("You can't get there from here!");
                 }

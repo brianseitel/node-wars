@@ -15,6 +15,7 @@ var Cluster = function(id, name) {
     }
 
     this.connect = function(cluster, universe) {
+        if (!cluster) return;
         var rand1 = Math.floor(Math.random() * this.sectors.length);
         var rand2 = Math.floor(Math.random() * cluster.sectors.length);
 

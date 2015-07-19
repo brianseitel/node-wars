@@ -50,48 +50,47 @@ function bigBang() {
         if (cluster.sectors.length === 0) {
             break;
         }
+
         // Set neighbors for clusters
         for (var j = 0; j < cluster.sectors.length; j++) {
             var sector = universe.getSector(cluster.sectors[j]);
-            var neighborCount = Math.floor(Math.random() * (config.MAX_NEIGHBORS - config.MIN_NEIGHBORS)) + config.MIN_NEIGHBORS;
 
-            var neighborList = cluster.sectors.slice(0);
-            var inbound = false;
-            var outbound = false;
+            if (cluster.sectors[j + 1]) {
+                var neighbor = cluster.sectors[j + 1];
+                sector.addNeighbor(neighbor);
+            }
 
-            while (neighborCount > 0) {
-                neighborList = helpers.shuffle(neighborList);
+            // Second pass, randomly add second connections
+            var chance = Math.random();
+            if (chance < config.TWO_WAY_RATIO) {
+                var sList = cluster.sectors.slice(0);
+                sList = helpers.shuffle(sList);
+                var neighbor = universe.getSector(sList.pop());
+                sector.addNeighbor(neighbor);
+            }
 
-                if (neighborList.length === 0) {
-                    break;
-                }
-                var neighbor = neighborList.pop();
-                if (!neighbor) {
-                    break;
-                }
+        }
+        // Third pass, randomly connect first and last sector
+        var chance = Math.random();
+        if (chance > config.ONE_WAY_RATIO) {
+            var first = universe.getSector(cluster.sectors[0]);
+            var last  = universe.getSector(cluster.sectors[cluster.sectors.length - 1]);
 
-                while (neighbor === sector.id) {
-                    break;
-                }
+            last.addNeighbor(first);
+        } else {
+            for (var i = cluster.sectors.length - 1; i >= 0; i--) {
+                if (!cluster.sectors[i - 1]) break;
+                var s1 = universe.getSector(cluster.sectors[i]);
+                var s2 = universe.getSector(cluster.sectors[i - 1]);
 
-                neighborCount--;
-                var inboundChance = Math.floor(Math.random() * 100) + 1;
-                if (!inbound || inboundChance < 50) {
-                    sector.addNeighbor(neighbor);
-                    inbound = true;
-                }
-                if (!outbound || inboundChance >= 50) {
-                    neighbor = universe.getSector(neighbor);
-                    neighbor.addNeighbor(sector.id);
-                    outbound = true;
-                }
+                s1.addNeighbor(s2);
             }
         }
 
         universe.addCluster(cluster);
     }
 
-    // hook up clusters
+    // // hook up clusters
     if (universe.clusters.length > 1) {
         for (var i = 0; i < universe.clusters.length; i++) {
             var cluster = universe.clusters[i];
@@ -107,24 +106,27 @@ function bigBang() {
             }
             cluster1.connect(clusterN, universe);
 
-            // Outbound cluster
-            var outboundCluster = Math.floor(Math.random() * universe.clusters.length);
+            // // Outbound cluster
+            var outboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
             while (outboundCluster === i) {
-                outboundCluster = Math.floor(Math.random() * universe.clusters.length);
+                outboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
             }
 
             cluster2 = universe.getCluster(outboundCluster);
-            cluster1.connect(cluster2, universe);
+            if (cluster2) {
+                cluster1.connect(cluster2, universe);
+            }
 
             // Inbound cluster
-            var inboundCluster = Math.floor(Math.random() * universe.clusters.length);
+            var inboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
             while (inboundCluster === i) {
-                inboundCluster = Math.floor(Math.random() * universe.clusters.length);
+                inboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
             }
 
             cluster2 = universe.getCluster(inboundCluster);
-            cluster2.connect(cluster1, universe);
-
+            if (cluster2) {
+                cluster2.connect(cluster1, universe);
+            }
             universe.clusters[i] = cluster;
         }
     }

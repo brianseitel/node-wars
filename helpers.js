@@ -1,6 +1,8 @@
 var prompt   = require('prompt');
 var Universe = require('./universe.js');
+var Sector   = require('./sector.js');
 var Mapper   = require('./mapper.js');
+var fs       = require('fs');
 
 var Helper = function() {
 
@@ -48,6 +50,51 @@ var Helper = function() {
             }
              helpers.getInput(sector, universe);
         });
+    },
+
+    this.saveMap = function(universe) {
+        var nodes = [];
+        var links = [];
+        var clusters = [];
+        var sectors  = [];
+        for (var c = 0; c < universe.clusters.length; c++) {
+            var cluster = universe.clusters[c];
+            for (var i = 0; i < cluster.sectors.length; i++) {
+                var s = universe.getSector(cluster.sectors[i]);
+
+                nodes.push({"id": s.id});
+
+                for (var n = 0; n < s.neighbors.length; n++) {
+                    links.push({"source": s.id, "directed": true, "target": s.neighbors[n]});
+                }
+                sectors.push(s);
+            }
+            clusters.push(cluster);
+        }
+
+        fs.writeFile("map.json", JSON.stringify({
+            "sectors": sectors,
+            "clusters": clusters,
+            "nodes": nodes,
+            "links": links
+        }));
+    },
+
+    this.loadMap = function() {
+        var json = JSON.parse(fs.readFileSync('map.json', 'utf8'));
+
+        var universe = new Universe;
+        for (i in json.sectors) {
+            var sector = new Sector(json.sectors[i].id, json.sectors[i].name);
+            sector.neighbors = json.sectors[i].neighbors;
+            universe.addSector(sector);
+        }
+
+        for (c in json.clusters) {
+            universe.addCluster(json.clusters[c]);
+        }
+
+        return universe;
     }
 };
 

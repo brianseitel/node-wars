@@ -2,8 +2,8 @@ var Universe = require('./universe.js');
 var Sector = require('./sector.js');
 
 var Sector = function(id, name) {
-    this.id = id;
-    this.name = name;
+    this.id        = id;
+    this.name      = name;
     this.neighbors = [];
 
     this.addNeighbor = function(neighbor) {

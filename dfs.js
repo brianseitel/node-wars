@@ -3,7 +3,7 @@
 (function () {
   var greuler = window.greuler;
 
-  window.d3.json('map.json', function (error, data) {
+  window.d3.json('data/map.json', function (error, data) {
     var instance = greuler({
       target: '#map',
       height: 3000,

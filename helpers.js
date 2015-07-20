@@ -50,8 +50,6 @@ var Helper = function() {
         }
 
         fs.writeFile("data/map.json", JSON.stringify({
-            "sectors": sectors,
-            "clusters": clusters,
             "nodes": nodes,
             "links": links
         }));

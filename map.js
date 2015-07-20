@@ -11,13 +11,13 @@
         file.shift();
         file = file.join('/');
         try {
-            var html = fs.readFileSync(file,"utf-8");
+            var html = fs.readFileSync(path.resolve(__dirname, file),"utf-8");
            //probably want to check the file extension here to determine the Content-Type
            response.writeHeader(200, {"Content-Type": "text/html"});  
            response.write(html);  
            response.end();
         } catch (ex) {
-            
+            console.log(ex);
         }  
     });
 

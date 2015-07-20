@@ -1,0 +1,6 @@
+[
+    {
+        "name": "help",
+        "method": "this.commands.help"
+    }
+]

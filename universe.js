@@ -2,8 +2,22 @@ var Sector   = require('./sector.js');
 var Cluster  = require('./cluster.js');
 
 var Universe = function() {
-    this.sectors = [];
+    this.sectors  = [];
     this.clusters = [];
+    this.shops    = [];
+
+    this.addShop = function(shop, sector) {
+        id = null;
+        if (typeof sector == "object") {
+            id = sector.id;
+        } else if (isInt(sector)) {
+            id = sector;
+        }
+
+        shop.sector = id;
+
+        this.shops.push(shop);
+    }
 
     this.addCluster = function(cluster) {
         this.clusters.push(cluster);

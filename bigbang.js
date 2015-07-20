@@ -1,6 +1,7 @@
 var Sector   = require('./sector.js');
 var Cluster  = require('./cluster.js');
 var Universe = require('./universe.js');
+var Shop     = require('./shop.js');
 var config   = require('./config.js');
 var fs       = require('fs');
 var Helper   = require('./helpers.js');
@@ -10,18 +11,35 @@ var helpers = new Helper;
 var maptool = new Mapper;
 
 var BigBang = function() {
+    this.universe = new Universe;
 
     this.start = function() {
-        var universe = new Universe();
+        this.initializeSectors();
+        this.initializeClusters();
+        this.connectClusters();
+        this.initializeShops();
 
+        return this.universe;
+    };
+
+    this.initializeShops = function() {
+        var shop = new Shop;
+        shop = shop.init();
+        console.log(shop);
+        this.universe.addShop(shop, 1);
+    };
+
+    this.initializeSectors = function() {
         // Create sectors
         for (i = 1; i < config.NUM_SECTORS + 1; i++) {
             var sector = new Sector(i, "Sector "+i);
-            universe.addSector(sector);
+            this.universe.addSector(sector);
         }
-        
+    };
+
+    this.initializeClusters = function() {
         // Create clusters and populate with sectors
-        var sectorList = universe.sectors.slice(0);
+        var sectorList = this.universe.sectors.slice(0);
 
         var clusterCount = 0;
         while (sectorList.length > 0) {
@@ -55,7 +73,7 @@ var BigBang = function() {
 
             // Set neighbors for clusters
             for (var j = 0; j < cluster.sectors.length; j++) {
-                var sector = universe.getSector(cluster.sectors[j]);
+                var sector = this.universe.getSector(cluster.sectors[j]);
 
                 if (cluster.sectors[j + 1]) {
                     var neighbor = cluster.sectors[j + 1];
@@ -67,7 +85,7 @@ var BigBang = function() {
                 if (chance < config.TWO_WAY_RATIO) {
                     var sList = cluster.sectors.slice(0);
                     sList = helpers.shuffle(sList);
-                    var neighbor = universe.getSector(sList.pop());
+                    var neighbor = this.universe.getSector(sList.pop());
                     sector.addNeighbor(neighbor);
                 }
 
@@ -75,65 +93,65 @@ var BigBang = function() {
             // Third pass, randomly connect first and last sector
             var chance = Math.random();
             if (chance > config.ONE_WAY_RATIO) {
-                var first = universe.getSector(cluster.sectors[0]);
-                var last  = universe.getSector(cluster.sectors[cluster.sectors.length - 1]);
+                var first = this.universe.getSector(cluster.sectors[0]);
+                var last  = this.universe.getSector(cluster.sectors[cluster.sectors.length - 1]);
 
                 last.addNeighbor(first);
             } else {
                 for (var i = cluster.sectors.length - 1; i >= 0; i--) {
                     if (!cluster.sectors[i - 1]) break;
-                    var s1 = universe.getSector(cluster.sectors[i]);
-                    var s2 = universe.getSector(cluster.sectors[i - 1]);
+                    var s1 = this.universe.getSector(cluster.sectors[i]);
+                    var s2 = this.universe.getSector(cluster.sectors[i - 1]);
 
                     s1.addNeighbor(s2);
                 }
             }
 
-            universe.addCluster(cluster);
+            this.universe.addCluster(cluster);
         }
+    },
 
+    this.connectClusters = function() {
         // // hook up clusters
-        if (universe.clusters.length > 1) {
-            for (var i = 0; i < universe.clusters.length; i++) {
-                var cluster = universe.clusters[i];
+        if (this.universe.clusters.length > 1) {
+            for (var i = 0; i < this.universe.clusters.length; i++) {
+                var cluster = this.universe.clusters[i];
 
-                cluster1 = universe.getCluster(i);
+                cluster1 = this.universe.getCluster(i);
 
                 // Next cluster
-                if (universe.clusters[i + 1]) {
-                    var clusterN = universe.getCluster(i + 1);
+                if (this.universe.clusters[i + 1]) {
+                    var clusterN = this.universe.getCluster(i + 1);
                 } else {
                     // Wrap around to first cluster
-                    var clusterN = universe.getCluster(0);
+                    var clusterN = this.universe.getCluster(0);
                 }
-                cluster1.connect(clusterN, universe);
+                cluster1.connect(clusterN, this.universe);
 
                 // // Outbound cluster
-                var outboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
+                var outboundCluster = Math.floor(Math.random() * this.universe.clusters.length / 4) + i;
                 while (outboundCluster === i) {
-                    outboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
+                    outboundCluster = Math.floor(Math.random() * this.universe.clusters.length / 4) + i;
                 }
 
-                cluster2 = universe.getCluster(outboundCluster);
+                cluster2 = this.universe.getCluster(outboundCluster);
                 if (cluster2) {
-                    cluster1.connect(cluster2, universe);
+                    cluster1.connect(cluster2, this.universe);
                 }
 
                 // Inbound cluster
-                var inboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
+                var inboundCluster = Math.floor(Math.random() * this.universe.clusters.length / 4) + i;
                 while (inboundCluster === i) {
-                    inboundCluster = Math.floor(Math.random() * universe.clusters.length / 4) + i;
+                    inboundCluster = Math.floor(Math.random() * this.universe.clusters.length / 4) + i;
                 }
 
-                cluster2 = universe.getCluster(inboundCluster);
+                cluster2 = this.universe.getCluster(inboundCluster);
                 if (cluster2) {
-                    cluster2.connect(cluster1, universe);
+                    cluster2.connect(cluster1, this.universe);
                 }
-                universe.clusters[i] = cluster;
+                this.universe.clusters[i] = cluster;
             }
         }
-
-        return universe;
     };
 };
 

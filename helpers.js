@@ -1,6 +1,7 @@
 var prompt   = require('prompt');
 var Universe = require('./universe.js');
 var Sector   = require('./sector.js');
+var Shop     = require('./shop.js');
 var Mapper   = require('./mapper.js');
 var fs       = require('fs');
 
@@ -16,46 +17,17 @@ var Helper = function() {
         return 1;
     },
 
-    this.getInput = function(sector, universe) {
-        prompt.start();
-        sector.neighbors.sort();
-        prompt.message = "You are in " + sector.name + ". Neighbors: [" + sector.neighbors.join(", ") + "]";
-        prompt.get(['input'], function(err, result) {
-            if (err) { return helpers.onErr(err); }
-
-            if (result.input == 'done') {
-                console.log("Bye!");
-                return 1;
-            }
-
-            if (parseInt(result.input)) {
-                var input = parseInt(result.input);
-
-                if (input === sector.id) {
-                    console.log("You are already there, dummy!");
-                } else if (sector.hasNeighbor(input)) {
-                    console.log("You warp to Sector " + input + " at light speed!");
-                    sector = universe.getSector(input);
-                } else if (universe.hasSector(input)) {
-                    var mapper = new Mapper;
-                    var G = mapper.buildGraph(universe);
-                    var path = mapper.shortestPath(sector.id, input, G);
-                    console.log("Shortest path is " + path.length + " hops: " + path.join(" -> "));
-                } else {
-                    console.log("You can't get there from here!");
-                }
-
-            } else {
-                console.log("Invalid input. Try again.");
-            }
-             helpers.getInput(sector, universe);
-        });
-    },
-
     this.save = function(universe) {
         this.saveMap(universe);
         this.saveUniverse(universe);
+        this.saveShops(universe);
     },
+
+    this.saveShops = function(universe) {
+        fs.writeFile("data/shops.json", JSON.stringify({
+            "shops": universe.shops
+        }));
+    };
 
     this.saveMap = function(universe) {
         var nodes = [];
@@ -89,10 +61,9 @@ var Helper = function() {
         fs.writeFile("data/universe.json", JSON.stringify(universe));
     }
 
-    this.load = function() {
+    this.load = function(universe) {
         var json = JSON.parse(fs.readFileSync('data/universe.json', 'utf8'));
 
-        var universe = new Universe;
         for (i in json.sectors) {
             if (!json.sectors[i]) continue;
             var sector = new Sector(json.sectors[i].id, json.sectors[i].name);
@@ -102,6 +73,21 @@ var Helper = function() {
 
         for (c in json.clusters) {
             universe.addCluster(json.clusters[c]);
+        }
+
+        var json = JSON.parse(fs.readFileSync('data/shops.json', 'utf8'));
+
+        for (s in json.shops) {
+            if (!json.shops[s]) continue;
+            var data = json.shops[s];
+            var shop = new Shop;
+            shop.buy    = data.buy;
+            shop.sell   = data.sell;
+            shop.bank   = data.bank;
+
+            shop.goods = data.goods;
+
+            universe.addShop(shop, data.sector);
         }
 
         return universe;

@@ -9,10 +9,12 @@ var helpers = new Helper;
 var prompt  = require('prompt');
 var Game = function() {
     this.universe       = new Universe;
+    this.player         = null;
     this.current_sector = null;
 
-    this.start = function(universe) {
-        this.universe      = helpers.load(this.universe);
+    this.start = function(universe, player) {
+        this.universe       = helpers.load(this.universe);
+        this.player         = helpers.loadPlayer();
         this.current_sector = this.universe.getSector(1);
 
         this.getInput();
@@ -65,12 +67,24 @@ var Game = function() {
     };
 
     this.help = function(args, game) {
-        var help = Commands.Help;
+        var help = Commands.Help;   
         return help.ask(args);
     };
 
+    this.attack = function(args, game) {
+        var attack = Commands.Attack;
+        return attack.start(args, game);
+    };
+
+    this.status = function(args, game) {
+        var player = Commands.Player;
+        return player.status(args, game);
+    };
+
     this.commandList = {
-        "help": this.help
+        "help"  : this.help,
+        "attack": this.attack,
+        "status": this.status,
     }
 };
 

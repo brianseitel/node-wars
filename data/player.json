@@ -1,0 +1,10 @@
+{
+    "name": "Brian",
+    "level": 5,
+    "credits": 50000,
+    "cargo": {
+        "ore": 0,
+        "fuel": 16,
+        "weapons": 0
+    }
+}

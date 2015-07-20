@@ -3,6 +3,7 @@ var Universe = require('./universe.js');
 var Sector   = require('./sector.js');
 var Shop     = require('./shop.js');
 var Mapper   = require('./mapper.js');
+var Player   = require('./player.js');
 var fs       = require('fs');
 
 var Helper = function() {
@@ -89,6 +90,23 @@ var Helper = function() {
         }
 
         return universe;
+    }
+
+    this.loadPlayer = function() {
+        var json = JSON.parse(fs.readFileSync('data/player.json', 'utf8'));
+
+        var player = new Player;
+
+        player.name    = json.name;
+        player.level   = json.level;
+        player.credits = json.credits;
+        player.cargo   = {
+            ore    : json.cargo.ore,
+            fuel   : json.cargo.fuel,
+            weapons: json.cargo.weapons
+        };
+
+        return player;
     }
 };
 

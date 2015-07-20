@@ -11,7 +11,7 @@ var maptool = new Mapper;
 var singularity = new BigBang;
 
 
-var universe = helpers.loadMap();
+var universe = helpers.load();
 
 // var success = false;
 // var success = maptool.testPaths(universe);

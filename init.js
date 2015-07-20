@@ -16,7 +16,7 @@ var universe = singularity.start();
 console.log("Universe initialized!");
 
 console.log("Building map file...");
-helpers.saveMap(universe);
+helpers.save(universe);
 console.log("Saved map file!");
 
 var success = maptool.testPaths(universe);

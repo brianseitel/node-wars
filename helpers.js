@@ -52,6 +52,11 @@ var Helper = function() {
         });
     },
 
+    this.save = function(universe) {
+        this.saveMap(universe);
+        this.saveUniverse(universe);
+    },
+
     this.saveMap = function(universe) {
         var nodes = [];
         var links = [];
@@ -72,7 +77,7 @@ var Helper = function() {
             clusters.push(cluster);
         }
 
-        fs.writeFile("map.json", JSON.stringify({
+        fs.writeFile("data/map.json", JSON.stringify({
             "sectors": sectors,
             "clusters": clusters,
             "nodes": nodes,
@@ -80,11 +85,16 @@ var Helper = function() {
         }));
     },
 
-    this.loadMap = function() {
-        var json = JSON.parse(fs.readFileSync('map.json', 'utf8'));
+    this.saveUniverse = function(universe) {
+        fs.writeFile("data/universe.json", JSON.stringify(universe));
+    }
+
+    this.load = function() {
+        var json = JSON.parse(fs.readFileSync('data/universe.json', 'utf8'));
 
         var universe = new Universe;
         for (i in json.sectors) {
+            if (!json.sectors[i]) continue;
             var sector = new Sector(json.sectors[i].id, json.sectors[i].name);
             sector.neighbors = json.sectors[i].neighbors;
             universe.addSector(sector);

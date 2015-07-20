@@ -18,7 +18,7 @@ var Game = function() {
         this.current_sector = this.universe.getSector(1);
 
         this.getInput();
-    },
+    };
 
     this.getInput = function() {
         prompt.start();
@@ -85,7 +85,7 @@ var Game = function() {
         "help"  : this.help,
         "attack": this.attack,
         "status": this.status,
-    }
+    };
 };
 
 module.exports = Game;

@@ -56,6 +56,7 @@ var Game = function() {
     this.promptShop = function() {
         var shop = this.current_sector.getShop(this.universe.shops);
         if (!shop) {
+            this.state = states.SPACE;
             return this.getInput();
         }
 

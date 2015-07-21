@@ -40,7 +40,8 @@ var Helper = function() {
             for (var i = 0; i < cluster.sectors.length; i++) {
                 var s = universe.getSector(cluster.sectors[i]);
 
-                nodes.push({"id": s.id});
+                var hasShop = !!s.getShop(universe.shops);
+                nodes.push({"id": s.id, "fill": hasShop ? "red" : "blue"});
 
                 for (var n = 0; n < s.neighbors.length; n++) {
                     links.push({"source": s.id, "directed": true, "target": s.neighbors[n]});
@@ -79,12 +80,9 @@ var Helper = function() {
         for (s in json.shops) {
             if (!json.shops[s]) continue;
             var data = json.shops[s];
-            var shop = new Shop;
-            shop.buy    = data.buy;
-            shop.sell   = data.sell;
+            var shop = new Shop(data.id);
             shop.bank   = data.bank;
-
-            shop.goods = data.goods;
+            shop.prices = data.prices;
 
             universe.addShop(shop, data.sector);
         }

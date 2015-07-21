@@ -1,7 +1,7 @@
-var Sector   = require('./sector.js');
-var Cluster  = require('./cluster.js');
-var Universe = require('./universe.js');
-var Shop     = require('./shop.js');
+var Sector   = require('./models/sector.js');
+var Cluster  = require('./models/cluster.js');
+var Universe = require('./models/universe.js');
+var Shop     = require('./models/shop.js');
 var config   = require('./config.js');
 var fs       = require('fs');
 var Helper   = require('./helpers.js');
@@ -23,10 +23,14 @@ var BigBang = function() {
     };
 
     this.initializeShops = function() {
-        var shop = new Shop;
-        shop = shop.init();
-        console.log(shop);
-        this.universe.addShop(shop, 1);
+
+        var numShops = Math.floor(config.NUM_SECTORS * config.SHOP_DENSITY);
+        for (var i = 0; i < numShops; i++) {
+            var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
+            var shop = new Shop(i);
+            shop = shop.init();
+            this.universe.addShop(shop, sector);
+        }        
     };
 
     this.initializeSectors = function() {

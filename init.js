@@ -1,4 +1,4 @@
-var Universe = require('./universe.js');
+var Universe = require('./models/universe.js');
 var Helper   = require('./helpers.js');
 var Mapper   = require('./mapper.js');
 var BigBang  = require('./bigbang.js');

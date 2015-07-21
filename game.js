@@ -58,8 +58,15 @@ var Game = function() {
             return this.getInput();
         }
 
-        prompt.message = "You are in an Outpost.\n";
-        prompt.message += shop.goods;
+        prompt.message = "\n\n\n\n";
+        prompt.message += "----------------------------\n";
+        prompt.message += "Outpost " + shop.id + Array(32 - shop.id.toString().length - 11 - 5 - shop.type.toString().length).join(" ") + "Type " + shop.type + "\n";
+        prompt.message += "----------------------------\n";
+        prompt.message += "Fuel       " + Array((18 - shop.prices.fuel.toString().length)).join(" ") + shop.prices.fuel + "\n";
+        prompt.message += "Organics   " + Array((18 - shop.prices.organics.toString().length)).join(" ") + shop.prices.organics + "\n";
+        prompt.message += "Equipment  " + Array((18 - shop.prices.equipment.toString().length)).join(" ") + shop.prices.equipment + "\n";
+        prompt.message += "----------------------------\n\n";
+        prompt.message += "Enter type and amount you would like to buy";
         prompt.get(['input'], this.processInput.bind(this));
     };
 
@@ -133,5 +140,7 @@ var Game = function() {
         "o"     : this.outpost,
     };
 };
-
+String.prototype.paddingLeft = function (paddingValue, length) {
+   return String(this + paddingValue).slice(0, length ? length : paddingValue.length);
+};
 module.exports = Game;

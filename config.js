@@ -9,8 +9,17 @@ var config = {
     TWO_WAY_RATIO: .3,  // 30% of sectors should have two-way connections
 
 
-    SHOP_MIN_BANKROLL: 10000,
+    SHOP_DENSITY         : 0.4, // 40% of sectors have shops
+    SHOP_MIN_BANKROLL    : 10000,
     SHOP_AVERAGE_BANKROLL: 500000,
+
+    FUEL_STANDARD_PRICE: 100,
+    ORGANICS_STANDARD_PRICE: 500,
+    EQUIPMENT_STANDARD_PRICE: 2500,
+
+    FUEL_MIN_PRICE: 50,
+    ORGANICS_MIN_PRICE: 150,
+    EQUIPMENT_MIN_PRICE: 750,
 };
 
 module.exports = config;

@@ -27,6 +27,11 @@ var BigBang = function() {
         var numShops = Math.floor(config.NUM_SECTORS * config.SHOP_DENSITY);
         for (var i = 0; i < numShops; i++) {
             var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
+
+            var s = this.universe.getSector(i);
+            if (s && s.getShop(this.universe.shops)) {
+                continue;
+            }
             var shop = new Shop(i);
             shop = shop.init();
             this.universe.addShop(shop, sector);

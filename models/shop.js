@@ -1,4 +1,4 @@
-var config   = require('./config.js');
+var config   = require('../config.js');
 
 var Shop = function() {
     this.sector = null;

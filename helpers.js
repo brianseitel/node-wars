@@ -1,9 +1,9 @@
 var prompt   = require('prompt');
-var Universe = require('./universe.js');
-var Sector   = require('./sector.js');
-var Shop     = require('./shop.js');
+var Universe = require('./models/universe.js');
+var Sector   = require('./models/sector.js');
+var Shop     = require('./models/shop.js');
 var Mapper   = require('./mapper.js');
-var Player   = require('./player.js');
+var Player   = require('./models/player.js');
 var fs       = require('fs');
 
 var Helper = function() {

@@ -1,18 +1,27 @@
-var Universe = require('./universe.js');
+var Universe = require('./models/universe.js');
 var Helper   = require('./helpers.js');
 var Mapper   = require('./mapper.js');
 var Commands = require('./commands/commands.js');
-var Shop     = require('./shop.js');
+var Shop     = require('./models/shop.js');
 var fs       = require('fs');
 
 var helpers = new Helper;
 var prompt  = require('prompt');
+
 var Game = function() {
+    this.state          = null;
     this.universe       = new Universe;
     this.player         = null;
     this.current_sector = null;
 
+    var states = {
+        SPACE      : 0,
+        IN_SHOP    : 1,
+        IN_STARDOCK: 2,
+    };
+
     this.start = function(universe, player) {
+        this.state          = this.SPACE;
         this.universe       = helpers.load(this.universe);
         this.player         = helpers.loadPlayer();
         this.current_sector = this.universe.getSector(1);
@@ -20,10 +29,41 @@ var Game = function() {
         this.getInput();
     };
 
+    this.setState = function(state) {
+        switch(state) {
+            case "IN_SHOP":
+                this.state = states.IN_SHOP;
+                break;
+            default:
+                this.state = states.SPACE;
+        }
+
+        return this.state;
+    };
+
     this.getInput = function() {
         prompt.start();
         this.current_sector.neighbors.sort();
 
+        switch(this.state) {
+            case states.IN_SHOP: this.promptShop(); break;
+            default:
+                this.promptSpace();            
+        }
+    };
+
+    this.promptShop = function() {
+        var shop = this.current_sector.getShop(this.universe.shops);
+        if (!shop) {
+            return this.getInput();
+        }
+
+        prompt.message = "You are in an Outpost.\n";
+        prompt.message += shop.goods;
+        prompt.get(['input'], this.processInput.bind(this));
+    };
+
+    this.promptSpace = function() {
         prompt.message = "You are in " + this.current_sector.name + ".\n";
         for (s in this.universe.shops) {
             if (this.universe.shops[s].sector == this.current_sector.id) {
@@ -81,10 +121,16 @@ var Game = function() {
         return player.status(args, game);
     };
 
+    this.outpost = function(args, game) {
+        var shop = Commands.Outpost;
+        return shop.enter(args, game);
+    };
+
     this.commandList = {
         "help"  : this.help,
         "attack": this.attack,
         "status": this.status,
+        "o"     : this.outpost,
     };
 };
 

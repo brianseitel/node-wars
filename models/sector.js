@@ -6,6 +6,16 @@ var Sector = function(id, name) {
     this.name      = name;
     this.neighbors = [];
 
+    this.getShop = function(shops) {
+        for (i in shops) {
+            if (shops[i].sector == this.id) {
+                return shops[i];
+            }
+        }
+
+        return false;
+    };
+
     this.addNeighbor = function(neighbor) {
         var id = null;
         if (neighbor instanceof Sector) {

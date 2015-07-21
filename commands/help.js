@@ -16,7 +16,7 @@ Help.prototype.ask = function(args) {
             text += "\n " + Array(message.title.length + 1).join('-');
             text += "\n " + wordwrap(message.body, 80, "\n", false);
             text += "\n\n " + "Keywords:";
-            text += "\n\n ";
+            text += "\n ";
 
         var keys = Object.keys(this.messages);
         for (i in keys) {

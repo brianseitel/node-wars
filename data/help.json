@@ -1,18 +1,32 @@
 {
     "stardock": {
         "title": "The Stardock",
-        "body": "The Stardock is the center of the universe. It contains the Shipyards (new ships), the Hardware Emporium (new weapons), the Police Station, and the Pub."
+        "body": "The Stardock is the center of the universe. It contains the Shipyards (new ships), the Hardware Emporium (new weapons), the Police Station, and the Pub.",
+        "keywords": ["stardock", "star dock"]
     },
     "turns": {
         "title": "Turn",
-        "body": "One turn represents the amount of time it takes to warp from one sector to the next. Each day you will receive a fixed number of turns. Once you are out of turns, that's it, and you have to wait until tomorrow to play again."
+        "body": "One turn represents the amount of time it takes to warp from one sector to the next. Each day you will receive a fixed number of turns. Once you are out of turns, that's it, and you have to wait until tomorrow to play again.",
+        "keywords": ["turn", "turns"]
     },
     "credits": {
         "title": "Credits",
-        "body": "Credits are the financial currency of the universe. You may use them to buy new ships or weapons, bribe bad guys, and post rewards in the Police Station, among other things. To gain more credits, you must buy and sell goods, kill other traders or aliens, or gamble in the Pub."
+        "body": "Credits are the financial currency of the universe. You may use them to buy new ships or weapons, bribe bad guys, and post rewards in the Police Station, among other things. To gain more credits, you must buy and sell goods, kill other traders or aliens, or gamble in the Pub.",
+        "keywords": ["credit", "credits", "money"]
     },
     "police": {
         "title": "Police Station",
-        "body": "At the Police Station, you can see what rewards are available and put up your own money for new rewards."
+        "body": "At the Police Station, you can see what rewards are available and put up your own money for new rewards.",
+        "keywords": ["police", "cops", "police station"]
+    },
+    "outpost": {
+        "title": "Outposts",
+        "body": "Outposts are where you can buy and sell goods, such as organics, fuel, and equipment.",
+        "keywords": ["outpost", "outposts"]
+    },
+    "ship": {
+        "title": "Ships",
+        "body": "Ships are what you're flying around in, idiot.",
+        "keywords": ["ship", "ships"]
     }
 }

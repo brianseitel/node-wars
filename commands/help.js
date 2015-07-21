@@ -1,60 +1,44 @@
 var fs = require('fs');
-
+var View = require('../view.js');
 var Help = function() {
     this.messages = JSON.parse(fs.readFileSync('data/help.json', 'utf8'));
 };
 
 Help.prototype.ask = function(args) {
     if (args.length === 0) {
-        var message = {
-            title: "Help",
-            body: "This is the help section. Choose one of the sections below and call it by typing `help <keyword>`."
+        var text = "";
+        var keys = Object.keys(this.messages).sort(function(a, b) {
+            return (a < b) ? -1 : (a > b) ? 1 : 0;
+        });
+
+        var map = [];
+        var row = [];
+        while (keys.length) {
+            var k = keys.shift();
+            row.push(k + Array(16 - k.length).join(" "));
+            if (row.length === 3) {
+                map.push(row);
+                row = [];
+            }
         }
-
-        var text  = "";
-            text += "\n " + message.title;
-            text += "\n " + Array(message.title.length + 1).join('-');
-            text += "\n " + wordwrap(message.body, 80, "\n", false);
-            text += "\n\n " + "Keywords:";
-            text += "\n ";
-
-        var keys = Object.keys(this.messages);
-        for (i in keys) {
-            if (i % 3 === 0) text += "\n ";
-            text += keys[i].paddingLeft('                   ');
-        }
-
-        text += "\n";
-
-        console.log(text);
+        
+        var view = new View('./views/help/default.txt');
+        return view.render({keys: map});
 
     } else if (this.messages[args[0]]) {
-        var message = this.messages[args[0]];
+        var view = new View('./views/help/entry.txt');
 
-        var text  = "";
-            text += "\n " + message.title;
-            text += "\n " + Array(message.title.length + 1).join('-');
-            text += "\n " + wordwrap(message.body, 80, "\n", false);
-            text += "\n"; 
-
-        console.log(text);
+        var item = this.messages[args[0]];
+        return view.render({
+            title: item.title,
+            body: item.body.replace(/(\S(.{0,78}\S)?)\s+/g, '$1\n'),
+            keywords: item.keywords
+        });
     }
-}
-
-function wordwrap( str, width, brk, cut ) {
- 
-    brk = brk || 'n';
-    width = width || 75;
-    cut = cut || false;
- 
-    if (!str) { return str; }
- 
-    var regex = '.{1,' +width+ '}(\s|$)' + (cut ? '|.{' +width+ '}|.+$' : '|\S+?(\s|$)');
- 
-    return str.match( RegExp(regex, 'g') ).join( brk );
- 
-}
-String.prototype.paddingLeft = function (paddingValue) {
-   return String(this + paddingValue).slice(0, paddingValue.length);
 };
+
+String.prototype.paddingLeft = function (paddingValue, length) {
+   return String(this + paddingValue).slice(0, length ? length : paddingValue.length);
+};
+
 module.exports = Help;

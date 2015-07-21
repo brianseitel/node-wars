@@ -22,7 +22,7 @@ var Game = function() {
     };
 
     this.start = function(universe, player) {
-        this.state          = this.SPACE;
+        this.state          = states.SPACE;
         this.universe       = helpers.load(this.universe);
         this.player         = helpers.loadPlayer();
         this.current_sector = this.universe.getSector(1);
@@ -42,15 +42,19 @@ var Game = function() {
         return this.state;
     };
 
-    this.getInput = function() {
+    this.getInput = function(message) {
         prompt.start();
-        this.current_sector.neighbors.sort();
 
-        switch(this.state) {
-            case states.IN_SHOP: this.promptShop(); break;
-            default:
-                this.promptSpace();            
+        if (message) {
+            prompt.message = message;
+        } else {
+            switch(this.state) {
+                case states.IN_SHOP: prompt = this.promptShop(); break;
+                default:
+                    prompt = this.promptSpace();            
+            }
         }
+        prompt.get(['input'], this.processInput.bind(this));
     };
 
     this.promptShop = function() {
@@ -62,7 +66,7 @@ var Game = function() {
 
         var view = new View('./views/shop.txt');
         prompt.message = view.render({shop : shop});
-        prompt.get(['input'], this.processInput.bind(this));
+        return prompt;
     };
 
     this.promptSpace = function() {
@@ -75,39 +79,24 @@ var Game = function() {
         };
 
         prompt.message = view.render(data);
-        prompt.get(['input'], this.processInput.bind(this));
+        return prompt;
     };
 
     this.processInput = function(err, result) {
         if (err) { return helpers.onErr(err); }
+        if (result.input == 'done') { return 1; }
 
-        if (result.input == 'done') {
-            console.log("Bye!");
-            return 1;
-        }
-
-        var args = result.input.split(' ');
-        var action = args.shift().toLowerCase();
+        var message = "";
+        var args    = result.input.split(' ');
+        var action  = args.shift().toLowerCase();
         if (this.commandList[action]) {
-            this.commandList[action].call(undefined, args, this);
+            message = this.commandList[action].call(undefined, args, this);
         } else {
-            action = parseInt(action, 10);
-            if (action === this.current_sector.id) {
-                console.log("You are already there, dummy!");
-            } else if (this.current_sector.hasNeighbor(action)) {
-                console.log("You warp to Sector " + action + " at light speed!");
-                this.current_sector = this.universe.getSector(action);
-            } else if (this.universe.hasSector(action)) {
-                var mapper = new Mapper;
-                var G      = mapper.buildGraph(this.universe);
-                var path   = mapper.shortestPath(this.current_sector.id, action, G);
-                console.log("Shortest path is " + path.length + " hops: " + path.join(" -> "));
-            } else {
-                console.log("You can't get there from here!");
-            }
+            // Default action is to move.
+            message = this.commandList["move"].call(undefined, [action], this);
         }
 
-        this.getInput();
+        this.getInput(message);
     };
 
     this.help = function(args, game) {
@@ -130,11 +119,17 @@ var Game = function() {
         return shop.enter(args, game);
     };
 
+    this.move = function(args, game) {
+        var player = Commands.Player;
+        return player.move(args, game);
+    };
+
     this.commandList = {
         "help"  : this.help,
         "attack": this.attack,
         "status": this.status,
         "o"     : this.outpost,
+        "move"  : this.move,
     };
 };
 String.prototype.paddingLeft = function (paddingValue, length) {

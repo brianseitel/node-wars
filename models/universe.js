@@ -14,6 +14,7 @@ var Universe = function() {
             id = sector;
         }
 
+
         shop.sector = id;
 
         this.shops.push(shop);

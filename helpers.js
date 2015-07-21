@@ -81,6 +81,8 @@ var Helper = function() {
             if (!json.shops[s]) continue;
             var data = json.shops[s];
             var shop = new Shop(data.id);
+            shop.type   = data.type;
+            shop._type  = shop.types[shop.type];
             shop.bank   = data.bank;
             shop.prices = data.prices;
 

@@ -11,6 +11,8 @@ var Shop = function(id) {
         equipment: 10,
     };
 
+    this._type = "";
+
     this.init = function() {
 
         // Pick the type of port
@@ -38,6 +40,7 @@ var Shop = function(id) {
         this.prices.organics  = organics_price;
         this.prices.equipment = equipment_price;
 
+        this._type = this.types[this.type];
         return this;
     }
 

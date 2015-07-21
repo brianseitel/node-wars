@@ -4,7 +4,8 @@ var Mapper   = require('./mapper.js');
 var Commands = require('./commands/commands.js');
 var Shop     = require('./models/shop.js');
 var fs       = require('fs');
-
+var View     = require('./view.js');
+ 
 var helpers = new Helper;
 var prompt  = require('prompt');
 
@@ -58,26 +59,21 @@ var Game = function() {
             return this.getInput();
         }
 
-        prompt.message = "\n\n\n\n";
-        prompt.message += "----------------------------\n";
-        prompt.message += "Outpost " + shop.id + Array(32 - shop.id.toString().length - 11 - 5 - shop.type.toString().length).join(" ") + "Type " + shop.type + "\n";
-        prompt.message += "----------------------------\n";
-        prompt.message += "Fuel       " + Array((18 - shop.prices.fuel.toString().length)).join(" ") + shop.prices.fuel + "\n";
-        prompt.message += "Organics   " + Array((18 - shop.prices.organics.toString().length)).join(" ") + shop.prices.organics + "\n";
-        prompt.message += "Equipment  " + Array((18 - shop.prices.equipment.toString().length)).join(" ") + shop.prices.equipment + "\n";
-        prompt.message += "----------------------------\n\n";
-        prompt.message += "Enter type and amount you would like to buy";
+        var view = new View('./views/shop.txt');
+        prompt.message = view.render({shop : shop});
         prompt.get(['input'], this.processInput.bind(this));
     };
 
     this.promptSpace = function() {
-        prompt.message = "You are in " + this.current_sector.name + ".\n";
-        for (s in this.universe.shops) {
-            if (this.universe.shops[s].sector == this.current_sector.id) {
-                prompt.message += "Joe's Crab Shack: " + this.universe.shops[s].inventory() + "\n";
-            }
-        }
-        prompt.message += "Neighbors: [" + this.current_sector.neighbors.join(", ") + "]";
+        var shop = this.current_sector.getShop(this.universe.shops);
+        var view = new View('./views/sector.txt');
+        var data = {
+            universe: this.universe,
+            sector: this.current_sector,
+            shop: shop
+        };
+
+        prompt.message = view.render(data);
         prompt.get(['input'], this.processInput.bind(this));
     };
 

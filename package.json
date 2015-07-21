@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "markup-js": "^1.5.21",
     "node-dijkstra": "^1.1.3"
   }
 }

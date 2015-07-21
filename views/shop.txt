@@ -1,0 +1,8 @@
+----------------------------
+Outpost {{ shop.id }}     Type {{ shop.type }}
+----------------------------
+Fuel       {{ shop.prices.fuel }}
+Organics   {{ shop.prices.organics }}
+Equipment  {{ shop.prices.equipment }}
+----------------------------
+Enter type and amount you would like to buy

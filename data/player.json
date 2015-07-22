@@ -3,8 +3,9 @@
     "level": 5,
     "credits": 50000,
     "cargo": {
-        "ore": 0,
-        "fuel": 16,
-        "weapons": 0
+        "max": 100,
+        "fuel": 0,
+        "organics": 16,
+        "equipment": 0
     }
 }

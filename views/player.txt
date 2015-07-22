@@ -1,0 +1,13 @@
+==========================================
+{{ player.name }}
+------------------------------------------
+Level: {{ player.level }}
+Credits: {{ player.credits }}
+
+Ship: Imperial Starship
+Cargo:
+    Fuel: {{ player.cargo.fuel }} / {{ player.cargo.max }}
+    Organics: {{ player.cargo.organics }} / {{ player.cargo.max }}
+    Equipment: {{ player.cargo.equipment }} / {{ player.cargo.max }}
+
+==========================================

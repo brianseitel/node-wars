@@ -34,6 +34,7 @@ var View = function(path) {
                 case "gray":    return str.gray; break;
                 case "grey":    return str.grey; break;
                 case "bold.white": return str.white.bold; break;
+                case "dark_cyan":  return str.cyan.dim; break;
             }
         }
 

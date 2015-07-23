@@ -1,13 +1,12 @@
 ==========================================
-{{ player.name }}
+{{ player.name|pad>34|colorize>white }} Level: {{ player.level|colorize>yellow}}
 ------------------------------------------
-Level: {{ player.level }}
-Credits: {{ player.credits }}
-
-Ship: Imperial Starship
+Credits: {{ player.credits|colorize>magenta }}
+------------------------------------------
+Ship: {{ player.ship|colorize>yellow}}
 Cargo:
-    Fuel: {{ player.cargo.fuel }} / {{ player.cargo.max }}
-    Organics: {{ player.cargo.organics }} / {{ player.cargo.max }}
-    Equipment: {{ player.cargo.equipment }} / {{ player.cargo.max }}
+    Fuel:      {{ player.cargo.fuel|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
+    Organics:  {{ player.cargo.organics|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
+    Equipment: {{ player.cargo.equipment|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
 
 ==========================================

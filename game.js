@@ -125,9 +125,20 @@ var Game = function() {
         return prompt;
     };
 
+    this.exit = function() {
+        helpers.save(this.universe); 
+        helpers.savePlayer(this.player);
+        for (i in this.intervals) {
+            clearTimeout(this.intervals[i]);
+        }
+        return 1;
+    };
+
     this.processInput = function(err, result) {
         if (err) { return helpers.onErr(err); }
-        if (["quit","exit","done"].indexOf(result.input) > -1) { helpers.save(this.universe); helpers.savePlayer(this.player); return 1; }
+        if (["quit","exit","done"].indexOf(result.input) > -1) {
+            return this.exit();
+        }
 
         var message = "";
         var args    = result.input.split(' ');

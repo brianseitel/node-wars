@@ -1,4 +1,7 @@
-*.json
+data/universe.json
+data/player.json
+data/shops.json
+data/map.json
 .DS_Store
 colors.sh
 logs/

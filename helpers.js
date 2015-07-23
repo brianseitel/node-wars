@@ -24,6 +24,10 @@ var Helper = function() {
         this.saveShops(universe);
     },
 
+    this.savePlayer = function(player) {
+        fs.writeFile("data/player.json", JSON.stringify(player));
+    };
+
     this.saveShops = function(universe) {
         fs.writeFile("data/shops.json", JSON.stringify({
             "shops": universe.shops
@@ -85,7 +89,8 @@ var Helper = function() {
             shop._type  = shop.types[shop.type];
             shop.bank   = data.bank;
             shop.prices = data.prices;
-
+            shop.inventory = data.inventory;
+            
             universe.addShop(shop, data.sector);
         }
 

@@ -1,5 +1,4 @@
 var config   = require('../config.js');
-
 var Shop = function(id) {
     this.id     = id;
     this.sector = null;

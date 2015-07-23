@@ -8,6 +8,8 @@ var Commands = {
     Attack : new Attack,
     Outpost: new Outpost,
     Player : new Player,
+    OutpostBuy: new Outpost,
+    OutpostSell: new Outpost,
 };
 
 module.exports = Commands;

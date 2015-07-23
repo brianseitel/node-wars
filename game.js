@@ -124,12 +124,40 @@ var Game = function() {
         return player.move(args, game);
     };
 
+    this.leave = function(args, game) {
+        if (game.state == states.IN_SHOP) {
+            var outpost = Commands.Outpost;
+            return outpost.leave(args, game);
+        }
+    }
+
+    this.buy = function(args, game) {
+        if (game.state == states.IN_SHOP) {
+            var outpost = Commands.Outpost;
+            return outpost.buy(args, game);
+        } else {
+            return "Oops! You can't do that here.\n";
+        }
+    };
+
+    this.sell = function(args, game) {
+        if (game.state == states.IN_SHOP) {
+            var outpost = Commands.Outpost;
+            return outpost.sell(args, game);
+        } else {
+            return "Oops! You can't do that here.\n";
+        }
+    };
+
     this.commandList = {
         "help"  : this.help,
         "attack": this.attack,
         "status": this.status,
         "o"     : this.outpost,
+        "leave" : this.leave,
         "move"  : this.move,
+        "buy"   : this.buy,
+        "sell"  : this.sell,
     };
 };
 String.prototype.paddingLeft = function (paddingValue, length) {

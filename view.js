@@ -14,6 +14,11 @@ var View = function(path) {
                 return p1 + "\n";
             });
         };
+
+        markup.pipes.pad = function(str, size) {
+            return str.toString() + new Array(size - str.toString().length).join(" ");
+        };
+
         return markup.up(template, params);
     }
 };

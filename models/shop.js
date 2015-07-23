@@ -21,9 +21,8 @@ var Shop = function(id) {
     this.init = function() {
 
         // Pick the type of port
-        var chance = Math.floor(Math.random * 100);
-
-        switch(1) {
+        var chance = Math.floor(Math.random() * 100);
+        switch(true) {
             case chance < 20:  this.type = 1; break; // 20% chance of Type 1
             case chance < 40:  this.type = 2; break; // 20% chance of Type 2
             case chance < 60:  this.type = 3; break; // 20% chance of Type 3
@@ -57,7 +56,7 @@ var Shop = function(id) {
 
         this._type = this.types[this.type];
         return this;
-    }
+    };
 
     this.findShop = function(universe, sector) {
         for (i in universe.shops) {
@@ -67,8 +66,41 @@ var Shop = function(id) {
         }
 
         return false;
-    }
+    };
 
+    this.buySellOptions = function() {
+        var options = this.types[this.type].split("");
+
+        var fuel      = options[0];
+        var organics  = options[1];
+        var equipment = options[3];
+
+        return options;
+    };
+
+    this.isBuyable = function(product) {
+        var options = this.buySellOptions();
+
+        switch (product.toLowerCase()) {
+            case "fuel":      return options[0] == "B"; break;
+            case "organics":  return options[1] == "B"; break;
+            case "equipment": return options[2] == "B"; break;
+        }
+
+        return false;
+    };
+
+    this.isSellable = function(product) {
+        var options = this.buySellOptions();
+
+        switch (product.toLowerCase()) {
+            case "fuel":      return options[0] == "S"; break;
+            case "organics":  return options[1] == "S"; break;
+            case "equipment": return options[2] == "S"; break;
+        }
+
+        return false;
+    }
 /*
     Type 1 - (BBS) - buying fuel ore, buying organics, selling equipment
     Type 2 - (BSB) - buying fuel ore, selling organics, buying equipment

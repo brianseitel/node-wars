@@ -1,10 +1,12 @@
-----------------------------
-Outpost {{ shop.id }}     Type {{ shop.type }}
-----------------------------
-Fuel       {{ shop.prices.fuel }} ({{ shop.inventory.fuel }} remaining)
-Organics   {{ shop.prices.organics }} ({{ shop.inventory.organics }} remaining)
-Equipment  {{ shop.prices.equipment }} ({{ shop.inventory.equipment }} remaining)
-----------------------------
+-----------------------------------------------------
+Outpost {{ shop.id|pad>3 }}                                 Type {{ shop.type }} {{shop.types[shop.type]}}
+-----------------------------------------------------
+Type       Price           Inventory       Your Cargo
+-----------------------------------------------------
+Fuel       {{ shop.prices.fuel|pad>16 }} {{ shop.inventory.fuel|pad>16 }} {{ player.cargo.fuel|pad>16 }}
+Organics   {{ shop.prices.organics|pad>16 }} {{ shop.inventory.organics|pad>16 }} {{ player.cargo.organics|pad>16 }}
+Equipment  {{ shop.prices.equipment|pad>16 }} {{ shop.inventory.equipment|pad>16 }} {{ player.cargo.equipment|pad>16 }}
+-----------------------------------------------------
 Credits Remaining: {{ player.credits }}
 
 Enter type and amount you would like to buy:

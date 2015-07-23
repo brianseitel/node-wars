@@ -8,12 +8,29 @@ var View     = require('./view.js');
  
 var helpers = new Helper;
 var prompt  = require('prompt');
+var async   = require('async');
+var bunyan  = require('bunyan');
 
 var Game = function() {
     this.state          = null;
     this.universe       = new Universe;
     this.player         = null;
     this.current_sector = null;
+
+    this.logger         = bunyan.createLogger({
+        name: 'nodewars',
+        streams: [
+            {
+                level: 'info',
+                path: 'logs/events.log'
+            },
+            {
+                level: 'error',
+                path: 'logs/errors.log'
+            }
+        ]
+    });
+    this.intervals      = [];
 
     var states = {
         SPACE      : 0,
@@ -27,7 +44,32 @@ var Game = function() {
         this.player         = helpers.loadPlayer();
         this.current_sector = this.universe.getSector(1);
 
-        this.getInput();
+        async.parallel([
+            (function() {
+                this.getInput();
+            }).bind(this),
+            (function() {
+                this.update();
+            }).bind(this)
+        ]);
+    };
+
+    this.update = function() {
+        this.intervals["main_loop"] = setInterval(function() {
+            this.logger.info("tick tock");
+            this.refreshShops();
+        }.bind(this), 1000);
+    };
+
+    this.refreshShops = function() {
+        if ((new Date).getMinutes() === 15) {
+            this.logger.info("Refreshing shops");
+            for (i in this.universe.shops) {
+                this.universe.shops[i].update(game);
+            }
+        } else {
+            this.logger.info("Not time to refresh shops...");
+        }
     };
 
     this.setState = function(state) {

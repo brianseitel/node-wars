@@ -36,6 +36,26 @@ var Shop = function(id) {
         
         this.bank = Math.floor(Math.random() * config.SHOP_AVERAGE_BANKROLL) + config.SHOP_MIN_BANKROLL;
 
+        this.stockShop();
+
+        this._type = this.types[this.type];
+        this._typeDisplay = this.colorType();
+        return this;
+    };
+
+    this.update = function(game) {
+        this.stockShop();
+        this.depositBank();
+
+        game.logger.info(this, "Shop updated");
+    };
+
+    this.depositBank = function() {
+        var income = Math.floor(Math.random()) + 1;
+        this.bank = this.bank * income; // up to double the moolah.
+    };
+
+    this.stockShop = function() {
         var price_fuel      = Math.floor(Math.random() * config.PRICE_FUEL_STANDARD) + config.PRICE_FUEL_MIN;
         var price_organics  = Math.floor(Math.random() * config.PRICE_ORGANICS_STANDARD) + config.PRICE_ORGANICS_MIN;
         var price_equipment = Math.floor(Math.random() * config.PRICE_EQUIPMENT_STANDARD) + config.PRICE_EQUIPMENT_MIN;
@@ -54,10 +74,6 @@ var Shop = function(id) {
             organics: inventory_organics,
             equipment: inventory_equipment
         };
-
-        this._type = this.types[this.type];
-        this._typeDisplay = this.colorType();
-        return this;
     };
 
     this.colorType = function() {

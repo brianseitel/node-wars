@@ -65,7 +65,7 @@ var Game = function() {
         }
 
         var view = new View('./views/shop.txt');
-        prompt.message = view.render({shop : shop});
+        prompt.message = view.render({shop : shop, player: this.player});
         return prompt;
     };
 

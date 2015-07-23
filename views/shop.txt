@@ -1,8 +1,10 @@
 ----------------------------
 Outpost {{ shop.id }}     Type {{ shop.type }}
 ----------------------------
-Fuel       {{ shop.prices.fuel }}
-Organics   {{ shop.prices.organics }}
-Equipment  {{ shop.prices.equipment }}
+Fuel       {{ shop.prices.fuel }} ({{ shop.inventory.fuel }} remaining)
+Organics   {{ shop.prices.organics }} ({{ shop.inventory.organics }} remaining)
+Equipment  {{ shop.prices.equipment }} ({{ shop.inventory.equipment }} remaining)
 ----------------------------
-Enter type and amount you would like to buy
+Credits Remaining: {{ player.credits }}
+
+Enter type and amount you would like to buy:

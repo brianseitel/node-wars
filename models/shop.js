@@ -11,6 +11,12 @@ var Shop = function(id) {
         equipment: 10,
     };
 
+    this.inventory = {
+        fuel     : 100,
+        organics : 50,
+        equipment: 25,
+    }
+
     this._type = "";
 
     this.init = function() {
@@ -31,21 +37,27 @@ var Shop = function(id) {
         
         this.bank = Math.floor(Math.random() * config.SHOP_AVERAGE_BANKROLL) + config.SHOP_MIN_BANKROLL;
 
-        var fuel_price      = Math.floor(Math.random() * config.FUEL_STANDARD_PRICE) + config.FUEL_MIN_PRICE;
-        var organics_price  = Math.floor(Math.random() * config.ORGANICS_STANDARD_PRICE) + config.ORGANICS_MIN_PRICE;
-        var equipment_price = Math.floor(Math.random() * config.EQUIPMENT_STANDARD_PRICE) + config.EQUIPMENT_MIN_PRICE;
-
+        var price_fuel      = Math.floor(Math.random() * config.PRICE_FUEL_STANDARD) + config.PRICE_FUEL_MIN;
+        var price_organics  = Math.floor(Math.random() * config.PRICE_ORGANICS_STANDARD) + config.PRICE_ORGANICS_MIN;
+        var price_equipment = Math.floor(Math.random() * config.PRICE_EQUIPMENT_STANDARD) + config.PRICE_EQUIPMENT_MIN;
+        
         this.prices = {};
-        this.prices.fuel      = fuel_price;
-        this.prices.organics  = organics_price;
-        this.prices.equipment = equipment_price;
+        this.prices.fuel      = price_fuel;
+        this.prices.organics  = price_organics;
+        this.prices.equipment = price_equipment;
+
+        var inventory_fuel  = Math.floor(Math.random() * config.INVENTORY_FUEL_STANDARD) + config.INVENTORY_FUEL_MIN;
+        var inventory_organics = Math.floor(Math.random() * config.INVENTORY_ORGANICS_STANDARD) + config.INVENTORY_ORGANICS_MIN;
+        var inventory_equipment = Math.floor(Math.random() * config.INVENTORY_EQUIPMENT_STANDARD) + config.INVENTORY_EQUIPMENT_MIN;
+
+        this.inventory = {
+            fuel: inventory_fuel,
+            organics: inventory_organics,
+            equipment: inventory_equipment
+        };
 
         this._type = this.types[this.type];
         return this;
-    }
-
-    this.inventory = function() {
-        return "[" + this.types[this.type] + "]";
     }
 
     this.findShop = function(universe, sector) {

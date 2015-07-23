@@ -23,7 +23,17 @@ var BigBang = function() {
     };
 
     this.initializeShops = function() {
-
+        var counts = {
+            1: 0,
+            2: 0,
+            3: 0,
+            4: 0,
+            5: 0,
+            6: 0,
+            7: 0,
+            8: 0,
+            9: 0,
+        };
         var numShops = Math.floor(config.NUM_SECTORS * config.SHOP_DENSITY);
         for (var i = 0; i < numShops; i++) {
             var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
@@ -35,7 +45,13 @@ var BigBang = function() {
             var shop = new Shop(i);
             shop = shop.init();
             this.universe.addShop(shop, sector);
-        }        
+
+            counts[shop.type]++;
+        }
+
+        for (i in counts) {
+            console.log("Class " + i + ": " + counts[i]);
+        }
     };
 
     this.initializeSectors = function() {

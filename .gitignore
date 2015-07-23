@@ -2,6 +2,7 @@ data/universe.json
 data/player.json
 data/shops.json
 data/map.json
+data/traders.json
 .DS_Store
 colors.sh
 logs/

@@ -33,8 +33,14 @@ var View = function(path) {
                 case "magenta": return str.magenta; break;
                 case "gray":    return str.gray; break;
                 case "grey":    return str.grey; break;
-                case "bold.white": return str.white.bold; break;
-                case "dark_cyan":  return str.cyan.dim; break;
+                case "bold.white":   return str.white.bold; break;
+                case "dark_cyan":    return str.cyan.dim; break;
+                case "dark_green":   return str.green.dim; break;
+                case "dark_red":     return str.red.dim; break;
+                case "dark_blue":    return str.blue.dim; break;
+                case "dark_yellow":  return str.yellow.dim; break;
+                case "dark_magenta": return str.magenta.dim; break;
+                case "dark_gray":    return str.gray.dim; break;
             }
         }
 

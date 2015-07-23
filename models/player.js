@@ -3,12 +3,16 @@ var Player = function() {
     this.level   = 1
     this.credits = 0;
     this.ship    = null;
-    this.cargo   = {
-        max       : 100, 
+    this.holds   = 100;
+    this.cargo   = { 
         fuel      : 0,
         organics  : 0,
-        equipments: 0
+        equipment : 0
     };
+
+    this.holdsRemaining = function() {
+        return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
+    }
 
 };
 

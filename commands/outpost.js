@@ -31,6 +31,7 @@ var Outpost = function() {
         var item   = args[0].toLowerCase();
         var amount = parseInt(args[1], 10);
         var cost   = amount * shop.prices[item];
+        var remaining = player.holdsRemaining();
 
         if (["fuel","organics","equipment"].indexOf(item) < 0) {
             return "Please provide a valid item: fuel, organics, equipment.\n";
@@ -46,6 +47,10 @@ var Outpost = function() {
 
         if (amount < 0) {
             return "Invalid amount. Please try again.\n";
+        }
+
+        if (remaining <= 0) {
+            return "You do not have enough holds to buy this product.\n";
         }
 
         if (player.credits - cost < 0) {
@@ -74,6 +79,8 @@ var Outpost = function() {
         var amount = parseInt(args[1], 10);
         var cost   = amount * shop.prices[item];
 
+        var holds = player.holds;
+        
         if (["fuel","organics","equipment"].indexOf(item) < 0) {
             return "Please provide a valid item: fuel, organics, equipment.\n";
         }
@@ -93,7 +100,7 @@ var Outpost = function() {
         if (shop.bank - cost < 0) {
             return "The shop cannot afford to buy this from you.\n";
         }
-        
+
         player.cargo[item]   -= amount;
         shop.inventory[item] += amount;
         player.credits       += cost;

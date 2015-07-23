@@ -107,8 +107,8 @@ var Helper = function() {
         player.level   = json.level;
         player.credits = json.credits;
         player.ship    = json.ship;
+        player.holds   = json.holds;
         player.cargo   = {
-            max       : json.cargo.max,
             fuel      : json.cargo.fuel,
             organics  : json.cargo.organics,
             equipment : json.cargo.equipment

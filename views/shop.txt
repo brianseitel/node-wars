@@ -7,6 +7,6 @@ Fuel       {{ shop.prices.fuel|pad>16|colorize>green }} {{ shop.inventory.fuel|p
 Organics   {{ shop.prices.organics|pad>16|colorize>green }} {{ shop.inventory.organics|pad>16|colorize>cyan }} {{ player.cargo.organics|pad>16|colorize>yellow }}
 Equipment  {{ shop.prices.equipment|pad>16|colorize>green }} {{ shop.inventory.equipment|pad>16|colorize>cyan }} {{ player.cargo.equipment|pad>16|colorize>yellow }}
 -----------------------------------------------------
-Credits Remaining: {{ player.credits|colorize>blue }}
+Credits Remaining: {{ player.credits|pad>19|colorize>blue }} Holds: {{ extras.holdsRemaining|colorize>green }} / {{player.holds|colorize>dark_green}}
 
 Enter type and amount you would like to buy:

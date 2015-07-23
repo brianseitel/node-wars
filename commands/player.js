@@ -4,7 +4,8 @@ var Player = function() {
     
     this.status = function(args, game) {
         var view = new View('./views/player.txt');
-        return view.render({player: game.player});
+        var extras = { holdsRemaining: game.player.holdsRemaining() };
+        return view.render({player: game.player, extras: extras});
     };
 
     this.move = function(args, game) {

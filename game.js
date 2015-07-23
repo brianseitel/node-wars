@@ -64,8 +64,9 @@ var Game = function() {
             return this.getInput();
         }
 
+        extras = { holdsRemaining: this.player.holdsRemaining() };
         var view = new View('./views/shop.txt');
-        prompt.message = view.render({shop : shop, player: this.player});
+        prompt.message = view.render({shop : shop, player: this.player, extras: extras});
         return prompt;
     };
 

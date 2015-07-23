@@ -5,8 +5,8 @@ Credits: {{ player.credits|colorize>magenta }}
 ------------------------------------------
 Ship: {{ player.ship|colorize>yellow}}
 Cargo:
-    Fuel:      {{ player.cargo.fuel|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
-    Organics:  {{ player.cargo.organics|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
-    Equipment: {{ player.cargo.equipment|pad>3|colorize>cyan }} / {{ player.cargo.max|colorize>dark_cyan }}
-
+    Fuel:      {{ player.cargo.fuel|pad>3|colorize>cyan }} / {{ player.holds|colorize>dark_cyan }}
+    Organics:  {{ player.cargo.organics|pad>3|colorize>cyan }} / {{ player.holds|colorize>dark_cyan }}
+    Equipment: {{ player.cargo.equipment|pad>3|colorize>cyan }} / {{ player.holds|colorize>dark_cyan }}
+    Empty:     {{ extras.holdsRemaining|pad>3|colorize>cyan }} / {{ player.holds|colorize>dark_cyan }}
 ==========================================

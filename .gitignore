@@ -1,0 +1,4 @@
+*.json
+.DS_Store
+colors.sh
+logs/

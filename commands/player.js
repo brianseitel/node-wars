@@ -1,4 +1,5 @@
 var View = require('../view.js');
+var Mapper = require('../mapper.js');
 var Player = function() {
     
     this.status = function(args, game) {

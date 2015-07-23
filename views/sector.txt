@@ -1,7 +1,7 @@
 ----------------------------------------------
-{{ sector.name }}
+{{ sector.name|colorize>yellow }}
 ----------------------------------------------{{ if shop }}
-Joe's Crab Shack: [{{shop._type}}]
+Joe's Crab Shack: [{{shop._typeDisplay}}]
 {{/if}}
-Neighbors: [{{ sector.neighbors|join>, }}]
+Neighbors: [{{ sector.neighbors|join>, |colorize>cyan}}]
 ----------------------------------------------

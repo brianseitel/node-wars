@@ -17,6 +17,7 @@ var Shop = function(id) {
     }
 
     this._type = "";
+    this._typeDisplay = "";
 
     this.init = function() {
 
@@ -55,7 +56,18 @@ var Shop = function(id) {
         };
 
         this._type = this.types[this.type];
+        this._typeDisplay = this.colorType();
         return this;
+    };
+
+    this.colorType = function() {
+        var result = "";
+
+        var t = this.types[this.type].split("");
+        for (i in t) {
+            result += t[i] == "B" ? t[i].cyan : t[i].blue;
+        }
+        return result;
     };
 
     this.findShop = function(universe, sector) {

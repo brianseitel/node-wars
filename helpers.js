@@ -87,6 +87,7 @@ var Helper = function() {
             var shop = new Shop(data.id);
             shop.type   = data.type;
             shop._type  = shop.types[shop.type];
+            shop._typeDisplay = shop.colorType();
             shop.bank   = data.bank;
             shop.prices = data.prices;
             shop.inventory = data.inventory;

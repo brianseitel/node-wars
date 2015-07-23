@@ -36,6 +36,10 @@ var Outpost = function() {
             return "Please provide a valid item: fuel, organics, equipment.\n";
         }
 
+        if (!shop.isBuyable(item)) {
+            return "This product is not for sale. Try selling " + item + " to this shop, instead!\n";
+        }
+
         if (amount > shop.inventory[item]) {
             return "There is not enough " + item + " for you to buy.\n";
         }
@@ -45,12 +49,9 @@ var Outpost = function() {
         }
 
         if (player.credits - cost < 0) {
-            return "You do not have enough credits to buy this amount.";
+            return "You do not have enough credits to buy this amount.\n";
         }
 
-        if (!shop.isBuyable(item)) {
-            return "This product is not for sale. Try selling " + item + " to this shop, instead!\n";
-        }
 
         player.cargo[item]   += amount;
         shop.inventory[item] -= amount;
@@ -81,17 +82,18 @@ var Outpost = function() {
             return "You do not have enough " + item + " to sell.\n";
         }
 
+        if (!shop.isSellable(item)) {
+            return "This shop has enough " + item + ". Try buying some, instead!\n";
+        }
+
         if (amount < 0) {
             return "Invalid amount. Please try again.\n";
         }
 
         if (shop.bank - cost < 0) {
-            return "The shop cannot afford to buy this from you.";
+            return "The shop cannot afford to buy this from you.\n";
         }
-
-        if (!shop.isSellable(item)) {
-            return "This shop has enough " + item + ". Try buying some, instead!\n";
-        }
+        
         player.cargo[item]   -= amount;
         shop.inventory[item] += amount;
         player.credits       += cost;

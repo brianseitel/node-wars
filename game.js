@@ -113,12 +113,12 @@ var Game = function() {
     };
 
     this.promptSpace = function() {
-        var shop = this.current_sector.getShop(this.universe.shops);
         var view = new View('./views/sector.txt');
         var data = {
             universe: this.universe,
             sector: this.current_sector,
-            shop: shop
+            shop: this.current_sector.getShop(this.universe.shops),
+            traders: this.current_sector.getTraders(this.universe.traders)
         };
 
         prompt.message = view.render(data);

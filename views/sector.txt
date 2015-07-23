@@ -2,6 +2,7 @@
 {{ sector.name|colorize>yellow }}
 ----------------------------------------------{{ if shop }}
 Joe's Crab Shack: [{{shop._typeDisplay}}]
-{{/if}}
+{{/if}}{{ if traders }}{{traders}}
+{{name|colorize>red}} is here.{{/traders}}{{/if}}
 Neighbors: [{{ sector.neighbors|join>, |colorize>cyan}}]
 ----------------------------------------------

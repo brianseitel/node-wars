@@ -16,6 +16,17 @@ var Sector = function(id, name) {
         return false;
     };
 
+    this.getTraders = function(traders) {
+        var t = [];
+        for (i in traders) {
+            if (traders[i].sector == this.id) {
+                t.push(traders[i]);
+            }
+        }
+
+        return t;
+    };
+
     this.addNeighbor = function(neighbor) {
         var id = null;
         if (neighbor instanceof Sector) {

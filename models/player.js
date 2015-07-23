@@ -1,6 +1,7 @@
 var Player = function() {
     this.name    = null;
-    this.level   = 1
+    this.sector  = 1;
+    this.level   = 1;
     this.credits = 0;
     this.ship    = null;
     this.holds   = 100;

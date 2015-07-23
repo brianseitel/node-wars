@@ -5,6 +5,7 @@ var Universe = function() {
     this.sectors  = [];
     this.clusters = [];
     this.shops    = [];
+    this.traders  = [];
 
     this.addShop = function(shop, sector) {
         id = null;
@@ -14,11 +15,22 @@ var Universe = function() {
             id = sector;
         }
 
-
         shop.sector = id;
-
         this.shops.push(shop);
     }
+
+    this.addTrader = function(trader, sector) {
+         id = null;
+        if (typeof sector == "object") {
+            id = sector.id;
+        } else if (isInt(sector)) {
+            id = sector;
+        }
+
+        trader.sector = id;
+        console.log(trader);
+        this.traders.push(trader);
+    };
 
     this.addCluster = function(cluster) {
         this.clusters.push(cluster);

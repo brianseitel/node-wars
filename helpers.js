@@ -4,6 +4,7 @@ var Sector   = require('./models/sector.js');
 var Shop     = require('./models/shop.js');
 var Mapper   = require('./mapper.js');
 var Player   = require('./models/player.js');
+var Trader   = require('./models/trader.js');
 var fs       = require('fs');
 
 var Helper = function() {
@@ -22,6 +23,7 @@ var Helper = function() {
         this.saveMap(universe);
         this.saveUniverse(universe);
         this.saveShops(universe);
+        this.saveTraders(universe);
     },
 
     this.savePlayer = function(player) {
@@ -33,6 +35,12 @@ var Helper = function() {
             "shops": universe.shops
         }));
     };
+
+    this.saveTraders = function(universe) {
+        fs.writeFile("data/traders.json", JSON.stringify({
+            "traders": universe.traders
+        }));
+    }
 
     this.saveMap = function(universe) {
         var nodes = [];
@@ -93,6 +101,27 @@ var Helper = function() {
             shop.inventory = data.inventory;
             
             universe.addShop(shop, data.sector);
+        }
+
+        var json = JSON.parse(fs.readFileSync("data/traders.json", "utf8"));
+
+        for (s in json.traders) {
+            if (!json.traders[s]) continue;
+
+            var data = json.traders[s];
+            var trader = new Trader(data.id);
+            trader.name    = data.name;
+            trader.level   = data.level;
+            trader.credits = data.credits;
+            trader.ship    = data.ship;
+            trader.holds   = data.holds;
+            trader.cargo   = {
+                fuel      : data.cargo.fuel,
+                organics  : data.cargo.organics,
+                equipment : data.cargo.equipment
+            };
+
+            universe.addTrader(trader, data.sector);
         }
 
         return universe;

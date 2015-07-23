@@ -2,6 +2,7 @@ var Sector   = require('./models/sector.js');
 var Cluster  = require('./models/cluster.js');
 var Universe = require('./models/universe.js');
 var Shop     = require('./models/shop.js');
+var Trader   = require('./models/trader.js');
 var config   = require('./config.js');
 var fs       = require('fs');
 var Helper   = require('./helpers.js');
@@ -18,8 +19,33 @@ var BigBang = function() {
         this.initializeClusters();
         this.connectClusters();
         this.initializeShops();
+        this.initializeTraders();
 
         return this.universe;
+    };
+
+    this.initializeTraders = function() {
+        var numTraders = Math.max(Math.floor(Math.random() * config.MAX_TRADERS), config.MIN_TRADERS);
+
+        console.log(numTraders);
+        var first_names = fs.readFileSync("data/first_names.txt", "utf8").split("\n");
+        var last_names  = fs.readFileSync("data/last_names.txt", "utf8").split("\n");
+        var visited = [];
+
+        first_names = helpers.shuffle(first_names);
+        last_names  = helpers.shuffle(last_names);
+        for (var i = 0; i < numTraders; i++) {
+            var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
+
+            var first_name = first_names.pop();
+            var last_name  = last_names.pop();
+
+            var trader = new Trader(i);
+            trader.init();
+            trader.name = first_name + " " + last_name;
+            console.log("adding trader " + trader.name);
+            this.universe.addTrader(trader, sector);
+        }
     };
 
     this.initializeShops = function() {

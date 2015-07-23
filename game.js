@@ -85,7 +85,7 @@ var Game = function() {
 
     this.processInput = function(err, result) {
         if (err) { return helpers.onErr(err); }
-        if (result.input == 'done') { return 1; }
+        if (["quit","exit","done"].indexOf(result.input) > -1) { return 1; }
 
         var message = "";
         var args    = result.input.split(' ');

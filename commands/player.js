@@ -16,7 +16,7 @@ var Player = function() {
         } else if (game.current_sector.hasNeighbor(action)) {
             message = "You warp to Sector " + action + " at light speed!\n";
             game.current_sector = game.universe.getSector(action);
-
+            game.player.sector = game.current_sector.id;
             prompt = game.promptSpace();
             message = message + prompt.message;
         } else if (game.universe.hasSector(action)) {

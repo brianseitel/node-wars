@@ -13,8 +13,11 @@ var Player = function() {
 
     this.holdsRemaining = function() {
         return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
-    }
+    };
 
+    this.broadcast = function(message) {
+        console.log(message);
+    };
 };
 
 module.exports = Player;

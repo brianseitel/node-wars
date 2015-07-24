@@ -1,3 +1,5 @@
+var config = require('../config.js')
+
 var Trader = function() {
     this.name    = null;
     this.sector  = 1;
@@ -29,6 +31,29 @@ var Trader = function() {
 
         return this;
     };
+
+    this.update = function(universe, emitter) {
+        this.move(universe, emitter);
+    };
+
+    this.move = function(universe, emitter) {
+        var chance = Math.floor(Math.random() * 100);
+        if (chance < config.TRADER_MOVE_CHANCE) {
+            var sector    = universe.getSector(this.sector);
+            var neighbors = shuffle(sector.neighbors.slice(0));
+
+            var next    = neighbors[0];
+            var old     = parseInt(this.sector, 10);
+            this.sector = next;
+
+            emitter.emit('trader.move', this, old);
+        }
+    }
+};
+
+function shuffle(o) {
+    for(var j, x, i = o.length; i; j = Math.floor(Math.random() * i), x = o[--i], o[i] = o[j], o[j] = x);
+    return o;
 };
 
 module.exports = Trader;

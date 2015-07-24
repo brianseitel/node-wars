@@ -1,5 +1,9 @@
-var config   = require('../config.js');
-var Shop = function(id) {
+var config       = require('../config.js');
+var util         = require('util');
+var event        = require('../event.js');
+var EventEmitter = require('events').EventEmitter;
+
+var Shop = function(id, emitter) {
     this.id     = id;
     this.sector = null;
     this.bank   = 0;
@@ -18,6 +22,8 @@ var Shop = function(id) {
 
     this._type = "";
     this._typeDisplay = "";
+
+    EventEmitter.call(this);
 
     this.init = function() {
 
@@ -43,11 +49,12 @@ var Shop = function(id) {
         return this;
     };
 
-    this.update = function(game) {
-        this.stockShop();
-        this.depositBank();
-
-        game.logger.info(this, "Shop updated");
+    this.update = function() {
+        var chance = Math.floor(Math.random() * 100);
+        if (chance === 1) {
+            this.stockShop();
+            this.depositBank();
+        }
     };
 
     this.depositBank = function() {
@@ -150,6 +157,7 @@ var Shop = function(id) {
         7: "SSS",
         8: "BBB"
     };
-}
+};
 
+util.inherits(Shop, EventEmitter);
 module.exports = Shop;

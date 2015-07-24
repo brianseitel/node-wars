@@ -5,7 +5,8 @@ var Commands = require('./commands/commands.js');
 var Shop     = require('./models/shop.js');
 var fs       = require('fs');
 var View     = require('./view.js');
- 
+var EventEmitter    = require('events').EventEmitter;
+
 var helpers = new Helper;
 var prompt  = require('prompt');
 var async   = require('async');
@@ -16,6 +17,9 @@ var Game = function() {
     this.universe       = new Universe;
     this.player         = null;
     this.current_sector = null;
+    this.emitter        = new EventEmitter;
+
+    this.emitter.setMaxListeners(100);
 
     this.logger         = bunyan.createLogger({
         name: 'nodewars',
@@ -40,9 +44,9 @@ var Game = function() {
 
     this.start = function(universe, player) {
         this.state          = states.SPACE;
-        this.universe       = helpers.load(this.universe);
-        this.player         = helpers.loadPlayer();
-        this.current_sector = this.universe.getSector(1);
+        this.universe       = helpers.load(this.universe, this.emitter);
+        this.player         = helpers.loadPlayer(this.emitter);
+        this.current_sector = this.universe.getSector(this.player.sector);
 
         async.parallel([
             (function() {
@@ -57,21 +61,10 @@ var Game = function() {
     this.update = function() {
         this.intervals["main_loop"] = setInterval(function() {
             this.logger.info("tick tock");
-            this.refreshShops();
+            this.emitter.emit('tick', this.universe, this.emitter);
         }.bind(this), 1000);
     };
-
-    this.refreshShops = function() {
-        if ((new Date).getMinutes() === 15) {
-            this.logger.info("Refreshing shops");
-            for (i in this.universe.shops) {
-                this.universe.shops[i].update(game);
-            }
-        } else {
-            this.logger.info("Not time to refresh shops...");
-        }
-    };
-
+    
     this.setState = function(state) {
         switch(state) {
             case "IN_SHOP":

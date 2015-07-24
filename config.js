@@ -1,15 +1,16 @@
 var config = {
-    NUM_SECTORS: 10,
-    MIN_NEIGHBORS: 2,
-    MAX_NEIGHBORS: 2,
+    NUM_SECTORS: 100,
+    MIN_NEIGHBORS: 3,
+    MAX_NEIGHBORS: 6,
     MIN_CLUSTERS:  5,
-    MIN_SECTORS_PER_CLUSTER: 2,
-    MAX_SECTORS_PER_CLUSTER: 2,
+    MIN_SECTORS_PER_CLUSTER: 4,
+    MAX_SECTORS_PER_CLUSTER: 8,
     ONE_WAY_RATIO: .15, // 5% of sectors should be one-way
     TWO_WAY_RATIO: .3,  // 30% of sectors should have two-way connections
 
-    MIN_TRADERS: 3,
-    MAX_TRADERS: 4,
+    MIN_TRADERS: 10,
+    MAX_TRADERS: 25,
+    TRADER_MOVE_CHANCE: 5,
     
     SHOP_DENSITY         : 0.4, // 40% of sectors have shops
     SHOP_MIN_BANKROLL    : 10000,

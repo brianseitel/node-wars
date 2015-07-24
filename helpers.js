@@ -73,7 +73,7 @@ var Helper = function() {
         fs.writeFile("data/universe.json", JSON.stringify(universe));
     }
 
-    this.load = function(universe) {
+    this.load = function(universe, emitter) {
         var json = JSON.parse(fs.readFileSync('data/universe.json', 'utf8'));
 
         for (i in json.sectors) {
@@ -100,6 +100,7 @@ var Helper = function() {
             shop.prices = data.prices;
             shop.inventory = data.inventory;
             
+            emitter.on('tick', shop.update.bind(shop));
             universe.addShop(shop, data.sector);
         }
 
@@ -121,18 +122,22 @@ var Helper = function() {
                 equipment : data.cargo.equipment
             };
 
+            emitter.on('tick', function(universe, emitter) {
+                this.update(universe, emitter);
+            }.bind(trader));
             universe.addTrader(trader, data.sector);
         }
 
         return universe;
     }
 
-    this.loadPlayer = function() {
+    this.loadPlayer = function(emitter) {
         var json = JSON.parse(fs.readFileSync('data/player.json', 'utf8'));
 
         var player = new Player;
 
         player.name    = json.name;
+        player.sector  = json.sector;
         player.level   = json.level;
         player.credits = json.credits;
         player.ship    = json.ship;
@@ -143,6 +148,13 @@ var Helper = function() {
             equipment : json.cargo.equipment
         };
 
+        emitter.on('trader.move', function(trader, old, next) {
+            if (old == player.sector) {
+                player.broadcast(trader.name + " just warped out of this sector.");
+            } else if (trader.sector == player.sector) {
+                player.broadcast(trader.name + " just warped into this sector.");
+            }
+        }.bind(player));
         return player;
     }
 };

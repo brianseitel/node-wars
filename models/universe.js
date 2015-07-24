@@ -28,7 +28,6 @@ var Universe = function() {
         }
 
         trader.sector = id;
-        console.log(trader);
         this.traders.push(trader);
     };
 

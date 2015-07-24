@@ -27,7 +27,6 @@ var BigBang = function() {
     this.initializeTraders = function() {
         var numTraders = Math.max(Math.floor(Math.random() * config.MAX_TRADERS), config.MIN_TRADERS);
 
-        console.log(numTraders);
         var first_names = fs.readFileSync("data/first_names.txt", "utf8").split("\n");
         var last_names  = fs.readFileSync("data/last_names.txt", "utf8").split("\n");
         var visited = [];
@@ -35,7 +34,7 @@ var BigBang = function() {
         first_names = helpers.shuffle(first_names);
         last_names  = helpers.shuffle(last_names);
         for (var i = 0; i < numTraders; i++) {
-            var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
+            var sector = Math.floor(Math.random() * this.universe.sectors.length);
 
             var first_name = first_names.pop();
             var last_name  = last_names.pop();
@@ -43,7 +42,6 @@ var BigBang = function() {
             var trader = new Trader(i);
             trader.init();
             trader.name = first_name + " " + last_name;
-            console.log("adding trader " + trader.name);
             this.universe.addTrader(trader, sector);
         }
     };

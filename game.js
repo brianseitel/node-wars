@@ -40,6 +40,7 @@ var Game = function() {
         SPACE      : 0,
         IN_SHOP    : 1,
         IN_STARDOCK: 2,
+        JUMPING    : 3,
     };
 
     this.start = function() {
@@ -74,6 +75,10 @@ var Game = function() {
             case "IN_SHOP":
                 this.state = states.IN_SHOP;
                 break;
+            case "JUMPING":
+                this.state = states.JUMPING;
+                break;
+            case "SPACE":
             default:
                 this.state = states.SPACE;
         }
@@ -89,6 +94,7 @@ var Game = function() {
         } else {
             switch(this.state) {
                 case states.IN_SHOP: prompt = this.promptShop(); break;
+                case states.JUMPING: return;
                 default:
                     prompt = this.promptSpace();            
             }
@@ -177,12 +183,18 @@ var Game = function() {
         return player.move(args, game);
     };
 
+    this.jump = function(args, game) {
+        if (!game.inSpace()) return;
+        var player = Commands.Player;
+        return player.jump(args, game);
+    };
+
     this.leave = function(args, game) {
         if (game.state == states.IN_SHOP) {
             var outpost = Commands.Outpost;
             return outpost.leave(args, game);
         }
-    }
+    };
 
     this.buy = function(args, game) {
         if (game.state == states.IN_SHOP) {
@@ -207,6 +219,7 @@ var Game = function() {
         "move"  : this.move,
         "buy"   : this.buy,
         "sell"  : this.sell,
+        "jump"  : this.jump,
     };
 };
 String.prototype.paddingLeft = function (paddingValue, length) {

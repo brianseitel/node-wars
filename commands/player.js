@@ -27,7 +27,32 @@ var Player = function() {
         }
 
         return message;
-    }
+    };
+
+    this.jump = function(args, game) {
+        game.setState("JUMPING");
+        var target = args[0];
+
+        var mapper = new Mapper;
+        var G      = mapper.buildGraph(game.universe);
+        var path   = mapper.shortestPath(game.current_sector.id, target, G);
+
+        path.shift(); // first is always current sector, skip it.
+        var finished = false;
+        if (path.length > 1) {
+            game.intervals["jump"] = setInterval(function() {
+                if (!path.length) {
+                    clearTimeout(game.intervals["jump"]);
+                    game.setState("SPACE");
+                    console.log("You have arrived at your destination!");
+                    return game.getInput();
+                }
+                var next = path.shift();
+                console.log(message = this.move([next], game));
+                game.promptSpace();
+            }.bind(this), 1000);
+        };
+    };
 };
 
 module.exports = Player;

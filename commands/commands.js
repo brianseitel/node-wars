@@ -4,12 +4,13 @@ var Player  = require('./player.js');
 var Outpost = require('./outpost.js');
 
 var Commands = {
-    Help   : new Help,
-    Attack : new Attack,
-    Outpost: new Outpost,
-    Player : new Player,
-    OutpostBuy: new Outpost,
+    Help       : new Help,
+    Attack     : new Attack,
+    Outpost    : new Outpost,
+    Player     : new Player,
+    OutpostBuy : new Outpost,
     OutpostSell: new Outpost,
+    Jump       : new Player,
 };
 
 module.exports = Commands;

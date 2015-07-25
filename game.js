@@ -42,10 +42,10 @@ var Game = function() {
         IN_STARDOCK: 2,
     };
 
-    this.start = function(universe, player) {
+    this.start = function() {
         this.state          = states.SPACE;
-        this.universe       = helpers.load(this.universe, this.emitter);
-        this.player         = helpers.loadPlayer(this.emitter);
+        this.universe       = helpers.load(this);
+        this.player         = helpers.loadPlayer(this);
         this.current_sector = this.universe.getSector(this.player.sector);
 
         async.parallel([
@@ -61,10 +61,14 @@ var Game = function() {
     this.update = function() {
         this.intervals["main_loop"] = setInterval(function() {
             this.logger.info("tick tock");
-            this.emitter.emit('tick', this.universe, this.emitter);
+            this.emitter.emit('tick', this);
         }.bind(this), 1000);
     };
     
+    this.inSpace = function() {
+        return this.state === states.SPACE;
+    };
+
     this.setState = function(state) {
         switch(state) {
             case "IN_SHOP":
@@ -147,11 +151,12 @@ var Game = function() {
     };
 
     this.help = function(args, game) {
-        var help = Commands.Help;   
+        var help = Commands.Help;
         return help.ask(args);
     };
 
     this.attack = function(args, game) {
+        if (!game.inSpace()) return;
         var attack = Commands.Attack;
         return attack.start(args, game);
     };
@@ -167,6 +172,7 @@ var Game = function() {
     };
 
     this.move = function(args, game) {
+        if (!game.inSpace()) return;
         var player = Commands.Player;
         return player.move(args, game);
     };
@@ -182,8 +188,6 @@ var Game = function() {
         if (game.state == states.IN_SHOP) {
             var outpost = Commands.Outpost;
             return outpost.buy(args, game);
-        } else {
-            return "Oops! You can't do that here.\n";
         }
     };
 
@@ -191,8 +195,6 @@ var Game = function() {
         if (game.state == states.IN_SHOP) {
             var outpost = Commands.Outpost;
             return outpost.sell(args, game);
-        } else {
-            return "Oops! You can't do that here.\n";
         }
     };
 

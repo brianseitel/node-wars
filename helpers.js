@@ -73,7 +73,16 @@ var Helper = function() {
         fs.writeFile("data/universe.json", JSON.stringify(universe));
     }
 
-    this.load = function(universe, emitter) {
+    this.load = function(game) {
+        universe = this.loadUniverse(game);
+        universe = this.loadShops(game);
+        universe = this.loadTraders(game);
+        return universe;
+    };
+
+    this.loadUniverse = function(game) {
+        var universe = game.universe;
+        var emitter  = game.emitter;
         var json = JSON.parse(fs.readFileSync('data/universe.json', 'utf8'));
 
         for (i in json.sectors) {
@@ -87,6 +96,12 @@ var Helper = function() {
             universe.addCluster(json.clusters[c]);
         }
 
+        return universe;
+    }
+
+    this.loadShops = function(game) {
+        var universe = game.universe;
+        var emitter  = game.emitter;
         var json = JSON.parse(fs.readFileSync('data/shops.json', 'utf8'));
 
         for (s in json.shops) {
@@ -100,10 +115,17 @@ var Helper = function() {
             shop.prices = data.prices;
             shop.inventory = data.inventory;
             
-            emitter.on('tick', shop.update.bind(shop));
+            emitter.on('tick', function(game) {
+                shop.update(game);
+            }.bind(shop));
             universe.addShop(shop, data.sector);
         }
+        return universe;
+    }
 
+    this.loadTraders = function(game) {
+        var universe = game.universe;
+        var emitter  = game.emitter;
         var json = JSON.parse(fs.readFileSync("data/traders.json", "utf8"));
 
         for (s in json.traders) {
@@ -122,8 +144,8 @@ var Helper = function() {
                 equipment : data.cargo.equipment
             };
 
-            emitter.on('tick', function(universe, emitter) {
-                this.update(universe, emitter);
+            emitter.on('tick', function(game) {
+                trader.update(game);
             }.bind(trader));
             universe.addTrader(trader, data.sector);
         }
@@ -131,7 +153,8 @@ var Helper = function() {
         return universe;
     }
 
-    this.loadPlayer = function(emitter) {
+    this.loadPlayer = function(game) {
+        var emitter = game.emitter;
         var json = JSON.parse(fs.readFileSync('data/player.json', 'utf8'));
 
         var player = new Player;
@@ -150,9 +173,9 @@ var Helper = function() {
 
         emitter.on('trader.move', function(trader, old, next) {
             if (old == player.sector) {
-                player.broadcast(trader.name + " just warped out of this sector.");
+                player.broadcast(trader.name + " just warped out of this sector.", game);
             } else if (trader.sector == player.sector) {
-                player.broadcast(trader.name + " just warped into this sector.");
+                player.broadcast(trader.name + " just warped into this sector.", game);
             }
         }.bind(player));
         return player;

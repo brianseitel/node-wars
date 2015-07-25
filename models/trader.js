@@ -32,7 +32,11 @@ var Trader = function() {
         return this;
     };
 
-    this.update = function(universe, emitter) {
+    this.update = function(game) {
+        var universe = game.universe;
+        var emitter  = game.emitter;
+
+        if (!universe) { throw game.universe; }
         this.move(universe, emitter);
     };
 

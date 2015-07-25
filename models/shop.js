@@ -1,6 +1,5 @@
 var config       = require('../config.js');
 var util         = require('util');
-var event        = require('../event.js');
 var EventEmitter = require('events').EventEmitter;
 
 var Shop = function(id, emitter) {
@@ -20,7 +19,11 @@ var Shop = function(id, emitter) {
         equipment: 25,
     }
 
-    this._type = "";
+    // The problem with the current templating language is that I can't
+    // call functions within the template, so I have to have a _typeDisplay
+    // to store an attribute that I would normally call a function to calculate
+    // on the fly. There's gotta be a better way to handle this.
+    this._type        = "";
     this._typeDisplay = "";
 
     EventEmitter.call(this);
@@ -49,7 +52,11 @@ var Shop = function(id, emitter) {
         return this;
     };
 
-    this.update = function() {
+    this.update = function(game) {
+        // Don't update the sector if the player is in it!
+        if (game.current_sector == this.sector) {
+            return;
+        }
         var chance = Math.floor(Math.random() * 100);
         if (chance === 1) {
             this.stockShop();

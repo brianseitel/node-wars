@@ -15,8 +15,10 @@ var Player = function() {
         return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
     };
 
-    this.broadcast = function(message) {
-        console.log(message);
+    this.broadcast = function(message, game) {
+        if (game.inSpace()) {
+            console.log(message);
+        }
     };
 };
 

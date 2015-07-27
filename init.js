@@ -3,8 +3,6 @@ var Helper   = require('./helpers.js');
 var Mapper   = require('./mapper.js');
 var BigBang  = require('./bigbang.js');
 
-var helpers = new Helper;
-var maptool = new Mapper;
 var singularity = new BigBang;
 
 
@@ -13,11 +11,11 @@ var universe = singularity.start();
 console.log("Universe initialized!");
 
 console.log("Building map file...");
-helpers.save(universe);
+Helper.save(universe);
 console.log("Saved map file!");
 
 console.log("Verifying laws of physics are correct...");
-var success = maptool.testPaths(universe);
+var success = Mapper.testPaths(universe);
 if (success) {
     console.log("Universe initialized successfully!");
 } else {

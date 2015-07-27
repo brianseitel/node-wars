@@ -1,5 +1,3 @@
-var Attack = function() {
-    
-};
+var Attack = function() {};
 
 module.exports = Attack;

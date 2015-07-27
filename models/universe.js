@@ -6,71 +6,71 @@ var Universe = function() {
     this.clusters = [];
     this.shops    = [];
     this.traders  = [];
+};
 
-    this.addShop = function(shop, sector) {
-        id = null;
-        if (typeof sector == "object") {
-            id = sector.id;
-        } else if (isInt(sector)) {
-            id = sector;
-        }
-
-        shop.sector = id;
-        this.shops.push(shop);
+Universe.prototype.addShop = function(shop, sector) {
+    id = null;
+    if (typeof sector == "object") {
+        id = sector.id;
+    } else if (isInt(sector)) {
+        id = sector;
     }
 
-    this.addTrader = function(trader, sector) {
-         id = null;
-        if (typeof sector == "object") {
-            id = sector.id;
-        } else if (isInt(sector)) {
-            id = sector;
-        }
+    shop.sector = id;
+    this.shops.push(shop);
+};
 
-        trader.sector = id;
-        this.traders.push(trader);
-    };
-
-    this.addCluster = function(cluster) {
-        this.clusters.push(cluster);
+Universe.prototype.addTrader = function(trader, sector) {
+     id = null;
+    if (typeof sector == "object") {
+        id = sector.id;
+    } else if (isInt(sector)) {
+        id = sector;
     }
 
-    this.addSector = function(sector) {
-        id = null;
-        if (typeof sector == "object") {
-            id = sector.id;
-        } else if (isInt(sector)) {
-            id = sector;
-        }
+    trader.sector = id;
+    this.traders.push(trader);
+};
 
-        this.sectors[id] = sector;
+Universe.prototype.addCluster = function(cluster) {
+    this.clusters.push(cluster);
+};
 
+Universe.prototype.addSector = function(sector) {
+    id = null;
+    if (typeof sector == "object") {
+        id = sector.id;
+    } else if (isInt(sector)) {
+        id = sector;
+    }
+
+    this.sectors[id] = sector;
+
+    return this.sectors[id];
+};
+
+Universe.prototype.hasSector = function(sector) {
+    var sector = this.getSector(sector);
+    return !!sector;
+};
+
+Universe.prototype.getSector = function(sector) {
+    id = null;
+    if (typeof sector == "object") {
+        id = sector.id;
+    } else if (isInt(sector)) {
+        id = sector;
+    }
+
+    if (id && this.sectors[id]) {
         return this.sectors[id];
     }
 
-    this.hasSector = function(sector) {
-        var sector = this.getSector(sector);
-        return !!sector;
-    }
+    return null;
+};
 
-    this.getSector = function(sector) {
-        id = null;
-        if (typeof sector == "object") {
-            id = sector.id;
-        } else if (isInt(sector)) {
-            id = sector;
-        }
-
-        if (id && this.sectors[id]) {
-            return this.sectors[id];
-        }
-
-        return null;
-    }
-
-    this.getCluster = function(cluster) {
-        return this.clusters[cluster];
-    }
+Universe.prototype.getCluster = function(cluster) {
+    return this.clusters[cluster];
 };
 
 function isInt(n) {

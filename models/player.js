@@ -10,16 +10,16 @@ var Player = function() {
         organics  : 0,
         equipment : 0
     };
+};
 
-    this.holdsRemaining = function() {
-        return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
-    };
+Player.prototype.holdsRemaining = function() {
+    return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
+};
 
-    this.broadcast = function(message, game) {
-        if (game.inSpace()) {
-            console.log(message);
-        }
-    };
+Player.prototype.broadcast = function(message, game) {
+    if (game.inSpace()) {
+        console.log(message);
+    }
 };
 
 module.exports = Player;

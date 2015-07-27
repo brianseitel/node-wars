@@ -13,45 +13,46 @@ var Trader = function() {
         equipment : 0
     };
 
-    this.holdsRemaining = function() {
-        return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
-    }
+};
 
-    this.init = function() {
-        this.level = Math.floor(Math.random() * 10) + 1;
-        this.sector = 1;
-        this.credits = Math.floor(Math.random() * 1000 * this.level);
-        this.ship    = "Imperial Starship";
-        this.holds   = 100;
-        this.cargo = {
-            fuel: Math.floor(Math.random() * 100),
-            organics: Math.floor(Math.random() * 50),
-            equipment: Math.floor(Math.random() * 25)
-        };
+Trader.prototype.holdsRemaining = function() {
+    return (this.holds - this.cargo.fuel - this.cargo.organics - this.cargo.equipment).toString();
+};
 
-        return this;
+Trader.prototype.init = function() {
+    this.level = Math.floor(Math.random() * 10) + 1;
+    this.sector = 1;
+    this.credits = Math.floor(Math.random() * 1000 * this.level);
+    this.ship    = "Imperial Starship";
+    this.holds   = 100;
+    this.cargo = {
+        fuel: Math.floor(Math.random() * 100),
+        organics: Math.floor(Math.random() * 50),
+        equipment: Math.floor(Math.random() * 25)
     };
 
-    this.update = function(game) {
-        var universe = game.universe;
-        var emitter  = game.emitter;
+    return this;
+};
 
-        if (!universe) { throw game.universe; }
-        this.move(universe, emitter);
-    };
+Trader.prototype.update = function(game) {
+    var universe = game.universe;
+    var emitter  = game.emitter;
 
-    this.move = function(universe, emitter) {
-        var chance = Math.floor(Math.random() * 100);
-        if (chance < config.TRADER_MOVE_CHANCE) {
-            var sector    = universe.getSector(this.sector);
-            var neighbors = shuffle(sector.neighbors.slice(0));
+    if (!universe) { throw game.universe; }
+    this.move(universe, emitter);
+};
 
-            var next    = neighbors[0];
-            var old     = parseInt(this.sector, 10);
-            this.sector = next;
+Trader.prototype.move = function(universe, emitter) {
+    var chance = Math.floor(Math.random() * 100);
+    if (chance < config.TRADER_MOVE_CHANCE) {
+        var sector    = universe.getSector(this.sector);
+        var neighbors = shuffle(sector.neighbors.slice(0));
 
-            emitter.emit('trader.move', this, old);
-        }
+        var next    = neighbors[0];
+        var old     = parseInt(this.sector, 10);
+        this.sector = next;
+
+        emitter.emit('trader.move', this, old);
     }
 };
 

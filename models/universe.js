@@ -1,5 +1,5 @@
-var Sector   = require('./sector.js');
-var Cluster  = require('./cluster.js');
+var Sector   = require('./sector');
+var Cluster  = require('./cluster');
 
 var Universe = function() {
     this.sectors  = [];

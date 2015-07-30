@@ -1,7 +1,7 @@
-var Universe = require('./models/universe.js');
-var Helper   = require('./helpers.js');
-var Mapper   = require('./mapper.js');
-var BigBang  = require('./bigbang.js');
+var Universe = require('./models/universe');
+var Helper   = require('./helpers');
+var Mapper   = require('./mapper');
+var BigBang  = require('./bigbang');
 
 var singularity = new BigBang;
 

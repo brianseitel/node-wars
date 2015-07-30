@@ -1,4 +1,4 @@
-var Sector = require('./sector.js');
+var Sector = require('../models/sector');
 
 var Cluster = function(id, name) {
     this.id = id;

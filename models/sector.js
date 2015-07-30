@@ -1,5 +1,5 @@
-var Universe = require('./universe.js');
-var Sector   = require('./sector.js');
+var Universe = require('./universe');
+var Sector   = require('./sector');
 
 var Sector = function(id, name) {
     this.id        = id;

@@ -1,4 +1,4 @@
-var Helper  = require('../helpers.js');
+var Helper  = require('../helpers');
 
 var Outpost = function() {};
 

@@ -1,7 +1,7 @@
-var Help    = require('./help.js');
-var Attack  = require('./attack.js');
-var Player  = require('./player.js');
-var Outpost = require('./outpost.js');
+var Help    = require('./help');
+var Attack  = require('./attack');
+var Player  = require('./player');
+var Outpost = require('./outpost');
 
 var Commands = {
     Help       : new Help,

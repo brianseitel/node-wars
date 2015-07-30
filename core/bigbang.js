@@ -1,11 +1,11 @@
-var Sector   = require('./models/sector');
-var Cluster  = require('./models/cluster');
-var Universe = require('./models/universe');
-var Shop     = require('./models/shop');
-var Trader   = require('./models/trader');
-var config   = require('./config');
+var Sector   = require('../models/sector');
+var Cluster  = require('../models/cluster');
+var Universe = require('../models/universe');
+var Shop     = require('../models/shop');
+var Trader   = require('../models/trader');
+var config   = require('../core/config');
 var fs       = require('fs');
-var Helper   = require('./helpers');
+var Helper   = require('../core/helpers');
 
 var BigBang = function() {
     this.universe = new Universe;

@@ -1,4 +1,4 @@
-var config = require('../config')
+var config = require('../core/config')
 
 var Trader = function() {
     this.name    = null;

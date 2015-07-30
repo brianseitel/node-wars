@@ -1,4 +1,4 @@
-var config       = require('../config');
+var config       = require('../core/config');
 var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
 

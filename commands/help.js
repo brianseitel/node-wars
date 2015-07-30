@@ -1,5 +1,5 @@
 var fs = require('fs');
-var View = require('../view');
+var View = require('../core/view');
 var Help = function() {
     this.messages = JSON.parse(fs.readFileSync('data/help.json', 'utf8'));
 };

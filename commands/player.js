@@ -1,5 +1,5 @@
-var View = require('../view');
-var Mapper = require('../mapper');
+var View = require('../core/view');
+var Mapper = require('../core/mapper');
 
 var Player = function() {};
 

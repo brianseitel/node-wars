@@ -1,10 +1,10 @@
-var Universe = require('./models/universe');
-var Helper   = require('./helpers');
-var Mapper   = require('./mapper');
-var Commands = require('./commands/commands');
-var Shop     = require('./models/shop');
+var Universe = require('../models/universe');
+var Helper   = require('../core/helpers');
+var Mapper   = require('../core/mapper');
+var Commands = require('../commands/commands');
+var Shop     = require('../models/shop');
 var fs       = require('fs');
-var View     = require('./view');
+var View     = require('../core/view');
 var EventEmitter    = require('events').EventEmitter;
 
 var prompt  = require('prompt');

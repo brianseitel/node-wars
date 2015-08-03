@@ -1,4 +1,4 @@
-var config       = require('../core/config');
+var config       = require('node-yaml-config').load('./config/game.yml');
 var util         = require('util');
 var EventEmitter = require('events').EventEmitter;
 
@@ -64,7 +64,7 @@ Shop.prototype.init = function() {
         case chance < 100: this.type = 8; break; // 5% chance of Type 8
     }
     
-    this.bank = Math.floor(Math.random() * config.SHOP_AVERAGE_BANKROLL) + config.SHOP_MIN_BANKROLL;
+    this.bank = Math.floor(Math.random() * config.outposts.bankroll.max) + config.outposts.bankroll.min;
 
     this.stockShop();
 
@@ -91,18 +91,18 @@ Shop.prototype.depositBank = function() {
 };
 
 Shop.prototype.stockShop = function() {
-    var price_fuel      = Math.floor(Math.random() * config.PRICE_FUEL_STANDARD) + config.PRICE_FUEL_MIN;
-    var price_organics  = Math.floor(Math.random() * config.PRICE_ORGANICS_STANDARD) + config.PRICE_ORGANICS_MIN;
-    var price_equipment = Math.floor(Math.random() * config.PRICE_EQUIPMENT_STANDARD) + config.PRICE_EQUIPMENT_MIN;
+    var price_fuel      = Math.floor(Math.random() * config.outposts.items.fuel.price.standard) + config.outposts.items.fuel.price.min;
+    var price_organics  = Math.floor(Math.random() * config.outposts.items.organics.price.standard) + config.outposts.items.organics.price.min;
+    var price_equipment = Math.floor(Math.random() * config.outposts.items.equipment.price.standard) + config.outposts.items.equipment.price.min;
     
     this.prices = {};
     this.prices.fuel      = price_fuel;
     this.prices.organics  = price_organics;
     this.prices.equipment = price_equipment;
 
-    var inventory_fuel      = Math.floor(Math.random() * config.INVENTORY_FUEL_STANDARD) + config.INVENTORY_FUEL_MIN;
-    var inventory_organics  = Math.floor(Math.random() * config.INVENTORY_ORGANICS_STANDARD) + config.INVENTORY_ORGANICS_MIN;
-    var inventory_equipment = Math.floor(Math.random() * config.INVENTORY_EQUIPMENT_STANDARD) + config.INVENTORY_EQUIPMENT_MIN;
+    var inventory_fuel      = Math.floor(Math.random() * config.outposts.items.fuel.inventory.standard) + config.outposts.items.fuel.inventory.min;
+    var inventory_organics  = Math.floor(Math.random() * config.outposts.items.organics.inventory.standard) + config.outposts.items.organics.inventory.min;
+    var inventory_equipment = Math.floor(Math.random() * config.outposts.items.equipment.inventory.standard) + config.outposts.items.equipment.inventory.min;
 
     this.inventory = {
         fuel:      inventory_fuel,

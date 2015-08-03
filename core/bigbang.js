@@ -1,11 +1,12 @@
-var Sector   = require('../models/sector');
+var config   = require('node-yaml-config').load('./config/game.yml');
+var fs       = require('fs');
+
 var Cluster  = require('../models/cluster');
-var Universe = require('../models/universe');
+var Helper   = require('../core/helpers');
+var Sector   = require('../models/sector');
 var Shop     = require('../models/shop');
 var Trader   = require('../models/trader');
-var config   = require('../core/config');
-var fs       = require('fs');
-var Helper   = require('../core/helpers');
+var Universe = require('../models/universe');
 
 var BigBang = function() {
     this.universe = new Universe;
@@ -22,7 +23,7 @@ BigBang.prototype.start = function() {
 };
 
 BigBang.prototype.initializeTraders = function() {
-    var numTraders = Math.max(Math.floor(Math.random() * config.MAX_TRADERS), config.MIN_TRADERS);
+    var numTraders = Math.max(Math.floor(Math.random() * config.traders.max), config.traders.min);
 
     var first_names = fs.readFileSync("data/first_names.txt", "utf8").split("\n");
     var last_names  = fs.readFileSync("data/last_names.txt", "utf8").split("\n");
@@ -55,7 +56,7 @@ BigBang.prototype.initializeShops = function() {
         8: 0,
         9: 0,
     };
-    var numShops = Math.floor(config.NUM_SECTORS * config.SHOP_DENSITY);
+    var numShops = Math.floor(config.universe.sectors * config.outposts.density);
     for (var i = 0; i < numShops; i++) {
         var sector = Math.floor(Math.random() * this.universe.sectors.length) + 1;
 
@@ -77,7 +78,7 @@ BigBang.prototype.initializeShops = function() {
 
 BigBang.prototype.initializeSectors = function() {
     // Create sectors
-    for (i = 1; i < config.NUM_SECTORS + 1; i++) {
+    for (i = 1; i < config.universe.sectors + 1; i++) {
         var sector = new Sector(i, "Sector "+i);
         this.universe.addSector(sector);
     }
@@ -91,7 +92,7 @@ BigBang.prototype.initializeClusters = function() {
     while (sectorList.length > 0) {
         clusterCount++;
         var cluster = new Cluster(clusterCount, "Cluster " + clusterCount);
-        var clusterSize = Math.floor(Math.random() * (config.MAX_SECTORS_PER_CLUSTER - config.MIN_SECTORS_PER_CLUSTER)) + config.MIN_SECTORS_PER_CLUSTER;
+        var clusterSize = Math.floor(Math.random() * (config.universe.clusters.per_cluster.max - config.universe.clusters.per_cluster.min)) + config.universe.clusters.per_cluster.min;
         while (sectorList.length > 0 && cluster.sectors.length < clusterSize) {
             sectorList = Helper.shuffle(sectorList);
             sector = sectorList.pop();
@@ -105,7 +106,7 @@ BigBang.prototype.initializeClusters = function() {
             cluster.addSector(sector);
         }
 
-        if (sectorList.length < config.MIN_SECTORS_PER_CLUSTER) {
+        if (sectorList.length < config.universe.clusters.per_cluster.min) {
             while (sectorList.length > 0) {
                 sector = sectorList.pop();
                 if (sector)
@@ -138,7 +139,7 @@ BigBang.prototype.initializeClusters = function() {
         }
         // Third pass, randomly connect first and last sector
         var chance = Math.random();
-        if (chance > config.ONE_WAY_RATIO) {
+        if (chance > config.universe.clusters.one_way_ratio) {
             var first = this.universe.getSector(cluster.sectors[0]);
             var last  = this.universe.getSector(cluster.sectors[cluster.sectors.length - 1]);
 

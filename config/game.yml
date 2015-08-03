@@ -1,0 +1,44 @@
+default:
+  universe:
+    sectors: 100
+    neighbors:
+      number: 3
+      max: 6
+    clusters:
+      min: 5
+      per_cluster:
+        min: 4
+        max: 8
+      one_way_ratio: 0.15
+      two_way_ratio: 0.30
+  traders:
+    min: 10
+    max: 25
+    move_chance: 5
+  outposts:
+    density: 0.4
+    bankroll:
+      min: 10000
+      max: 500000
+    items:
+      fuel:
+        inventory:
+          standard: 100
+          min: 50
+        price:
+          standard: 100
+          min: 50
+      organics:
+        inventory:
+          standard: 50
+          min: 10
+        price:
+          standard: 500
+          min: 150
+      equipment:
+        inventory:
+          standard: 25
+          min: 0
+        price:
+          standard: 2500
+          min: 750

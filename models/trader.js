@@ -1,4 +1,4 @@
-var config = require('../core/config')
+var config   = require('node-yaml-config').load('./config/game.yml');
 
 var Trader = function() {
     this.name    = null;
@@ -44,7 +44,7 @@ Trader.prototype.update = function(game) {
 
 Trader.prototype.move = function(universe, emitter) {
     var chance = Math.floor(Math.random() * 100);
-    if (chance < config.TRADER_MOVE_CHANCE) {
+    if (chance < config.traders.move_chance) {
         var sector    = universe.getSector(this.sector);
         var neighbors = shuffle(sector.neighbors.slice(0));
 

@@ -16,6 +16,7 @@
     "colors": "^1.1.2",
     "markup-js": "^1.5.21",
     "node-dijkstra": "^1.1.3",
+    "node-yaml-config": "0.0.3",
     "prompt": "^0.2.14"
   },
   "devDependencies": {
